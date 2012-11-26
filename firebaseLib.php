@@ -15,9 +15,11 @@
  * @link   https://www.firebase.com/docs/rest-api.html
  *
  */
-class Firebase {
+class Firebase
+{
 
     private $_baseURI;
+    private $_timeout;
 
     /**
      * Constructor
@@ -33,6 +35,7 @@ class Firebase {
         }
 
         $this->setBaseURI($baseURI);
+        $this->setTimeOut(10);
     }
 
     /**
@@ -48,12 +51,24 @@ class Firebase {
     }
 
     /**
+     * Sets REST call timeout in seconds
+     *
+     * @param Integer $seconds Seconds to timeout
+     *
+     * @return void
+     */
+    public function setTimeOut($seconds)
+    {
+        $this->_timeout = $seconds;
+    }
+
+    /**
      * Writing data into Firebase with a PUT request
      * 
      * @param String $path Path
      * @param Mixed  $data Data
      *
-     * @return Array $response
+     * @return Array Response
      */
     public function set($path, $data)
     {
@@ -65,7 +80,7 @@ class Firebase {
      *
      * @param String $path Path
      *
-     * @return Array $response
+     * @return Array Response
      */
     public function get($path)
     {
@@ -78,7 +93,7 @@ class Firebase {
      * @param String $path Path
      * @param Mixed  $data Data
      *
-     * @return Array $response
+     * @return Array Response
      */
     public function push($path, $data)
     {
@@ -90,11 +105,36 @@ class Firebase {
      *
      * @param type $path Path
      *
-     * @return Array $response
+     * @return Array Response
      */
     public function delete($path)
     {
         
+    }
+
+    /**
+     * Call Firebase with the constructed URI
+     *
+     * @param String $param Parameters to add for the call
+     *
+     * @return Array Response
+     */
+    private function _fireCall($param)
+    {
+        $url = $this->_baseURI . $param;
+        try {
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, $url);
+            curl_setopt($ch, CURLOPT_TIMEOUT, $this->_timeout);
+            curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $this->_timeout);
+            curl_setopt($ch, CURLOPT_HEADER, 0);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            $return = curl_exec($ch);
+            curl_close($ch);
+        } catch (Exception $e) {
+            $return = null;
+        }
     }
 
 }
