@@ -17,29 +17,53 @@
  */
 class Firebase {
 
+    private $_baseURI;
+
     /**
      * Constructor
+     *
+     * @param String $baseURI Base URI
+     *
+     * @return void
      */
-    function __construct() {
+    function __construct($baseURI = '')
+    {
+        $this->setBaseURI($baseURI);
+    }
 
+    /**
+     * Sets Base URI, ex: http://yourcompany.firebase.com/youruser
+     *
+     * @param String $baseURI Base URI
+     *
+     * @return void
+     */
+    public function setBaseURI($baseURI)
+    {
+        $this->_baseURI = $baseURI;
     }
 
     /**
      * Writing data into Firebase with a PUT request
      * 
-     * @param type $obj
+     * @param String $path Path
+     * @param Mixed  $data Data
+     *
+     * @return Array $response
      */
-    public function write($obj)
+    public function set($path, $data)
     {
-        
+        $jsonData = json_encode($data);
     }
 
     /**
      * Reading data from Firebase
      *
-     * @param type $obj
+     * @param String $path Path
+     *
+     * @return Array $response
      */
-    public function read($obj)
+    public function get($path)
     {
 
     }
@@ -47,14 +71,24 @@ class Firebase {
     /**
      * Pushing data to Firebase
      *
-     * @param type $obj
+     * @param String $path Path
+     * @param Mixed  $data Data
+     *
+     * @return Array $response
      */
-    public function push($obj)
+    public function push($path, $data)
     {
-
+        $jsonData = json_encode($data);
     }
 
-    public function delete($endPoint)
+    /**
+     * Deletes data from Firebase
+     *
+     * @param type $path Path
+     *
+     * @return Array $response
+     */
+    public function delete($path)
     {
         
     }
