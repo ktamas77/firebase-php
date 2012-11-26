@@ -28,6 +28,10 @@ class Firebase {
      */
     function __construct($baseURI = '')
     {
+        if (!extension_loaded('curl')) {
+            trigger_error('Extension CURL is not loaded.', E_USER_ERROR);
+        }
+
         $this->setBaseURI($baseURI);
     }
 
