@@ -77,6 +77,7 @@ class Firebase
 
     /**
      * Writing data into Firebase with a PUT request
+     * HTTP 200: Ok
      * 
      * @param String $path Path
      * @param Mixed  $data Data
@@ -97,7 +98,6 @@ class Firebase
             curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
             curl_setopt($ch, CURLOPT_TIMEOUT, $this->_timeout);
             curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $this->_timeout);
-            curl_setopt($ch, CURLOPT_HEADER, 0);
             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
@@ -112,6 +112,7 @@ class Firebase
 
     /**
      * Reading data from Firebase
+     * HTTP 200: Ok
      *
      * @param String $path Path
      *
@@ -125,7 +126,6 @@ class Firebase
             curl_setopt($ch, CURLOPT_URL, $url);
             curl_setopt($ch, CURLOPT_TIMEOUT, $this->_timeout);
             curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $this->_timeout);
-            curl_setopt($ch, CURLOPT_HEADER, 0);
             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
@@ -138,20 +138,8 @@ class Firebase
     }
 
     /**
-     * Pushing data to Firebase
-     *
-     * @param String $path Path
-     * @param Mixed  $data Data
-     *
-     * @return Array Response
-     */
-    public function push($path, $data)
-    {
-        $jsonData = json_encode($data);
-    }
-
-    /**
      * Deletes data from Firebase
+     * HTTP 204: Ok
      *
      * @param type $path Path
      *
@@ -159,7 +147,21 @@ class Firebase
      */
     public function delete($path)
     {
-        
+        $url = $this->_getJsonPath($path);
+        try {
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, $url);
+            curl_setopt($ch, CURLOPT_TIMEOUT, $this->_timeout);
+            curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $this->_timeout);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'DELETE');
+            $return = curl_exec($ch);
+            curl_close($ch);
+        } catch (Exception $e) {
+            $return = null;
+        }
+        return $return;
     }
 
 }
