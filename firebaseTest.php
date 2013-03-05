@@ -2,11 +2,22 @@
 
 require_once 'firebaseLib.php';
 
-$fb = new fireBase('http://yourcompany.firebase.com/youruser');
+// --- set up your own database here
+$url = 'https://yourdatabasename.firebaseio.com/';
+
+$fb = new fireBase($url);
 
 $todos = array(
     'name' => 'Pick the milk',
     'priority' => 1
 );
 
-$response = $fb->push('todos', $todos);
+$todoPath = '/sample/todo';
+
+printf("Sending data to %s\n", $url);
+$response = $fb->set($todoPath, $todos);
+printf("Result: %s\n", $response);
+
+printf("Reading data from %s\n", $todoPath);
+$response = $fb->get($todoPath);
+printf("Result: %s\n", $response);

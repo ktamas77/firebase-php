@@ -47,7 +47,20 @@ class Firebase
      */
     public function setBaseURI($baseURI)
     {
+        $baseURI .= (substr($baseURI, -1) == '/' ? '' : '/');
         $this->_baseURI = $baseURI;
+    }
+
+    /**
+     * Returns with the normalized JSON absolute path
+     *
+     * @param String $path to data
+     */
+    private function _getJsonPath($path)
+    {
+        $url = $this->_baseURI;
+        $path = ltrim($path, '/');
+        return sprintf($url . $path . '.json');
     }
 
     /**
@@ -72,7 +85,29 @@ class Firebase
      */
     public function set($path, $data)
     {
+        $url = $this->_getJsonPath($path);
         $jsonData = json_encode($data);
+        $header = array(
+            'Content-Type: application/json',
+            'Content-Length: ' . strlen($jsonData)
+        );
+        try {
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, $url);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
+            curl_setopt($ch, CURLOPT_TIMEOUT, $this->_timeout);
+            curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $this->_timeout);
+            curl_setopt($ch, CURLOPT_HEADER, 0);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonData);
+            $return = curl_exec($ch);
+            curl_close($ch);
+        } catch (Exception $e) {
+            $return = null;
+        }
+        return $return;
     }
 
     /**
@@ -84,7 +119,22 @@ class Firebase
      */
     public function get($path)
     {
-
+        $url = $this->_getJsonPath($path);
+        try {
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, $url);
+            curl_setopt($ch, CURLOPT_TIMEOUT, $this->_timeout);
+            curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $this->_timeout);
+            curl_setopt($ch, CURLOPT_HEADER, 0);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
+            $return = curl_exec($ch);
+            curl_close($ch);
+        } catch (Exception $e) {
+            $return = null;
+        }
+        return $return;
     }
 
     /**
@@ -110,31 +160,6 @@ class Firebase
     public function delete($path)
     {
         
-    }
-
-    /**
-     * Call Firebase with the constructed URI
-     *
-     * @param String $param Parameters to add for the call
-     *
-     * @return Array Response
-     */
-    private function _fireCall($param)
-    {
-        $url = $this->_baseURI . $param;
-        try {
-            $ch = curl_init();
-            curl_setopt($ch, CURLOPT_URL, $url);
-            curl_setopt($ch, CURLOPT_TIMEOUT, $this->_timeout);
-            curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $this->_timeout);
-            curl_setopt($ch, CURLOPT_HEADER, 0);
-            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-            $return = curl_exec($ch);
-            curl_close($ch);
-        } catch (Exception $e) {
-            $return = null;
-        }
     }
 
 }
