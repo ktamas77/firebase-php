@@ -92,7 +92,7 @@ class Firebase
             'Content-Length: ' . strlen($jsonData)
         );
         try {
-            $ch = $this->_GetCurlHandler($path, 'PUT');
+            $ch = $this->_getCurlHandler($path, 'PUT');
             curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
             curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonData);
             $return = curl_exec($ch);
