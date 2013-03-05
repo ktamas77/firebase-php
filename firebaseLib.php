@@ -86,21 +86,14 @@ class Firebase
      */
     public function set($path, $data)
     {
-        $url = $this->_getJsonPath($path);
         $jsonData = json_encode($data);
         $header = array(
             'Content-Type: application/json',
             'Content-Length: ' . strlen($jsonData)
         );
         try {
-            $ch = curl_init();
-            curl_setopt($ch, CURLOPT_URL, $url);
+            $ch = $this->_GetCurlHandler($path, 'PUT');
             curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
-            curl_setopt($ch, CURLOPT_TIMEOUT, $this->_timeout);
-            curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $this->_timeout);
-            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
             curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonData);
             $return = curl_exec($ch);
             curl_close($ch);
@@ -120,15 +113,8 @@ class Firebase
      */
     public function get($path)
     {
-        $url = $this->_getJsonPath($path);
         try {
-            $ch = curl_init();
-            curl_setopt($ch, CURLOPT_URL, $url);
-            curl_setopt($ch, CURLOPT_TIMEOUT, $this->_timeout);
-            curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $this->_timeout);
-            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
+            $ch = $this->_getCurlHandler($path, 'GET');
             $return = curl_exec($ch);
             curl_close($ch);
         } catch (Exception $e) {
@@ -147,21 +133,34 @@ class Firebase
      */
     public function delete($path)
     {
-        $url = $this->_getJsonPath($path);
         try {
-            $ch = curl_init();
-            curl_setopt($ch, CURLOPT_URL, $url);
-            curl_setopt($ch, CURLOPT_TIMEOUT, $this->_timeout);
-            curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $this->_timeout);
-            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'DELETE');
+            $ch = $this->_getCurlHandler($path, 'DELETE');
             $return = curl_exec($ch);
             curl_close($ch);
         } catch (Exception $e) {
             $return = null;
         }
         return $return;
+    }
+
+    /**
+     * Returns with Initialized CURL Handler
+     *
+     * @param String $mode Mode
+     *
+     * @return CURL Curl Handler
+     */
+    private function _getCurlHandler($path, $mode)
+    {
+        $url = $this->_getJsonPath($path);
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_TIMEOUT, $this->_timeout);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $this->_timeout);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $mode);
+        return $ch;
     }
 
 }
