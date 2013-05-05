@@ -117,6 +117,63 @@ class Firebase
         }
         return $return;
     }
+    
+    /**
+     * Writing data into Firebase with a POST request
+     * HTTP 200: Ok
+     * 
+     * @param String $path Path
+     * @param Mixed  $data Data
+     *
+     * @return Array Response
+     */
+    public function push($path, $data)
+    {
+        $jsonData = json_encode($data);
+        $header = array(
+            'Content-Type: application/json',
+            'Content-Length: ' . strlen($jsonData)
+        );
+        try {
+            $ch = $this->_getCurlHandler($path, 'POST');
+            curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonData);
+            $return = curl_exec($ch);
+            curl_close($ch);
+        } catch (Exception $e) {
+            $return = null;
+        }
+        return $return;
+    }
+
+
+/**
+     * Writing data into Firebase with a PATCH request
+     * HTTP 200: Ok
+     * 
+     * @param String $path Path
+     * @param Mixed  $data Data
+     *
+     * @return Array Response
+     */
+    public function update($path, $data)
+    {
+        $jsonData = json_encode($data);
+        $header = array(
+            'Content-Type: application/json',
+            'Content-Length: ' . strlen($jsonData)
+        );
+        try {
+            $ch = $this->_getCurlHandler($path, 'PATCH');
+            curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonData);
+            $return = curl_exec($ch);
+            curl_close($ch);
+        } catch (Exception $e) {
+            $return = null;
+        }
+        return $return;
+    }
 
     /**
      * Reading data from Firebase
