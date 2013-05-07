@@ -194,6 +194,28 @@ class Firebase
         }
         return $return;
     }
+    
+    
+    /**
+     * Reading data from Firebase
+     * HTTP 200: Ok
+     *
+     * @param String $path Path
+     *
+     * @return PHP Object
+     */
+    public function getObj($path)
+    {
+        try {
+            $ch = $this->_getCurlHandler($path, 'GET');
+            $return = curl_exec($ch);
+            curl_close($ch);
+        } catch (Exception $e) {
+            $return = null;
+        }
+        return json_decode($return);
+    }
+    
 
     /**
      * Deletes data from Firebase
