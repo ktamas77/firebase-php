@@ -20,6 +20,7 @@ class Firebase
 
     private $_baseURI;
     private $_timeout;
+    private $_token;
 
     /**
      * Constructor
@@ -28,7 +29,7 @@ class Firebase
      *
      * @return void
      */
-    function __construct($baseURI = '')
+    function __construct($baseURI = '', $token = '')
     {
         if (!extension_loaded('curl')) {
             trigger_error('Extension CURL is not loaded.', E_USER_ERROR);
@@ -36,6 +37,19 @@ class Firebase
 
         $this->setBaseURI($baseURI);
         $this->setTimeOut(10);
+        $this->setToken($token);
+    }
+    
+    /**
+     * Sets Token
+     * 
+     * @param String $token Token
+     * 
+     * @return void
+     */
+    public function setToken($token)
+    {
+        $this->_token = $token;
     }
 
     /**
@@ -60,7 +74,8 @@ class Firebase
     {
         $url = $this->_baseURI;
         $path = ltrim($path, '/');
-        return sprintf($url . $path . '.json');
+        $auth = ($this->_token == '') ? '' : '?auth=' . $this->_token;
+        return $url . $path . '.json' . $auth;
     }
 
     /**

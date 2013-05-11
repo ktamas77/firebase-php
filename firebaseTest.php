@@ -6,7 +6,7 @@ require_once 'firebaseLibAuth.php';
 $url = 'https://yourdatabase.firebaseio.com/';
 $token = 'YOUR TOKEN HERE';
 
-$fb = new fireBase($url,$token);
+$fb = new fireBase($url, $token);
 
 $todos = array(
     'name' => 'Pick the milk',
