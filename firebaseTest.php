@@ -1,11 +1,12 @@
 <?php
 
-require_once 'firebaseLib.php';
+require_once 'firebaseLibAuth.php';
 
 // --- set up your own database here
 $url = 'https://yourdatabase.firebaseio.com/';
+$token = 'YOUR TOKEN HERE';
 
-$fb = new fireBase($url);
+$fb = new fireBase($url,$token);
 
 $todos = array(
     'name' => 'Pick the milk',
