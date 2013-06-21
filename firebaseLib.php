@@ -5,7 +5,7 @@
  *
  * @author Tamas Kalman <ktamas77@gmail.com>
  * @link   https://www.firebase.com/docs/rest-api.html
- * 
+ *
  */
 
 /**
@@ -39,12 +39,12 @@ class Firebase
         $this->setTimeOut(10);
         $this->setToken($token);
     }
-    
+
     /**
      * Sets Token
-     * 
+     *
      * @param String $token Token
-     * 
+     *
      * @return void
      */
     public function setToken($token)
@@ -93,7 +93,7 @@ class Firebase
     /**
      * Writing data into Firebase with a PUT request
      * HTTP 200: Ok
-     * 
+     *
      * @param String $path Path
      * @param Mixed  $data Data
      *
@@ -101,21 +101,35 @@ class Firebase
      */
     public function set($path, $data)
     {
-        $jsonData = json_encode($data);
-        $header = array(
-            'Content-Type: application/json',
-            'Content-Length: ' . strlen($jsonData)
-        );
-        try {
-            $ch = $this->_getCurlHandler($path, 'PUT');
-            curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonData);
-            $return = curl_exec($ch);
-            curl_close($ch);
-        } catch (Exception $e) {
-            $return = null;
-        }
-        return $return;
+      return $this->_writeData($path, $data, 'PUT');
+    }
+
+    /**
+     * Pushing data into Firebase with a POST request
+     * HTTP 200: Ok
+     *
+     * @param String $path Path
+     * @param Mixed  $data Data
+     *
+     * @return Array Response
+     */
+    public function push($path, $data)
+    {
+      return $this->_writeData($path, $data, 'POST');
+    }
+
+    /**
+     * Updating data into Firebase with a PATH request
+     * HTTP 200: Ok
+     *
+     * @param String $path Path
+     * @param Mixed  $data Data
+     *
+     * @return Array Response
+     */
+    public function update($path, $data)
+    {
+      return $this->_writeData($path, $data, 'PATCH');
     }
 
     /**
@@ -176,6 +190,25 @@ class Firebase
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $mode);
         return $ch;
+    }
+
+    private function _writeData($path, $data, $method = 'PUT')
+    {
+        $jsonData = json_encode($data);
+        $header = array(
+            'Content-Type: application/json',
+            'Content-Length: ' . strlen($jsonData)
+        );
+        try {
+            $ch = $this->_getCurlHandler($path, $method);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonData);
+            $return = curl_exec($ch);
+            curl_close($ch);
+        } catch (Exception $e) {
+            $return = null;
+        }
+        return $return;
     }
 
 }
