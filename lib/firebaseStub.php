@@ -3,8 +3,6 @@
  * Stubs the Firebase interface without issuing any cURL requests.
  **/
 
-require_once 'firebaseInterface.php';
-
 class FirebaseStub
     implements FirebaseInterface
 {

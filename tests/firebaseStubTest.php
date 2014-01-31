@@ -1,5 +1,6 @@
 <?php
 
+require_once join('/', array(__DIR__, '..', 'lib', 'firebaseInterface.php'));
 require_once join('/', array(__DIR__, '..', 'lib', 'firebaseStub.php'));
 
 class FirebaseStubTest extends PHPUnit_Framework_TestCase
