@@ -36,6 +36,7 @@ public function setFirebaseValue($path, $value, $firebase) {
 Then your phpunit tests will look like:
 
 <?php
+  require_once '<path>/lib/firebaseInterface.php'
   require_once '<path>/lib/firebaseStub.php'
 
   class MyClass extends PHPUnit_Framework_TestCase
