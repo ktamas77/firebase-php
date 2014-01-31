@@ -1,5 +1,7 @@
 <?php
 
+require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'lib'.DIRECTORY_SEPARATOR.'FirebaseInterface.php';
+
 /**
  * Firebase PHP Client Library
  *
@@ -15,9 +17,8 @@
  * @link   https://www.firebase.com/docs/rest-api.html
  *
  */
-class Firebase
+class Firebase implements FirebaseInterface
 {
-
     private $_baseURI;
     private $_timeout;
     private $_token;
@@ -31,6 +32,10 @@ class Firebase
      */
     function __construct($baseURI = '', $token = '')
     {
+        if ($baseURI == '') {
+            trigger_error('You must provide a baseURI variable.', E_USER_ERROR);
+        }
+
         if (!extension_loaded('curl')) {
             trigger_error('Extension CURL is not loaded.', E_USER_ERROR);
         }
