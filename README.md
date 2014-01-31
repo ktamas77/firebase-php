@@ -9,10 +9,6 @@ firebase-php
 
 Based on Firebase REST API: https://www.firebase.com/docs/rest-api.html
 
-* Base library: @ktamas77
-* Token auth: @craigrusso
-* Update & Push method: @mintao
-
 Firebase PHP Stub
 =================
 A Firebase PHP Stub has been created to allow for integration with phpunit without actually interacting with FirebaseIO.
