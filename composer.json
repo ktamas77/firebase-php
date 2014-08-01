@@ -1,0 +1,12 @@
+{
+    "name": "ktamas77/firebase-php",
+    "description": "Firebase PHP Client",
+    "keywords": ["firebase", "REST", "wrapper"],
+    "authors": [{
+        "name": "Tamas Kalman",
+        "email": "ktamas77@gmail.com"
+    }],
+    "require": {
+        "php": ">=5.3.0"
+    }
+}
