@@ -8,6 +8,7 @@ firebase-php
 # Firebase PHP Client
 
 Based on Firebase REST API: https://www.firebase.com/docs/rest-api.html
+Available on Packagist: https://packagist.org/packages/ktamas77/firebase-php
 
 Firebase PHP Stub
 =================
