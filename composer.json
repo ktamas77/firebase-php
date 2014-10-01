@@ -2,6 +2,7 @@
     "name": "ktamas77/firebase-php",
     "description": "Firebase PHP Client",
     "keywords": ["firebase", "REST", "wrapper"],
+    "license": "MIT",
     "authors": [{
         "name": "Tamas Kalman",
         "email": "ktamas77@gmail.com"
