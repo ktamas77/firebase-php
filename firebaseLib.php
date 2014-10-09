@@ -6,6 +6,7 @@ require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'lib'.DIRECTORY_SEPARATOR.'fi
  * Firebase PHP Client Library
  *
  * @author Tamas Kalman <ktamas77@gmail.com>
+ * @url    https://github.com/ktamas77/firebase-php/
  * @link   https://www.firebase.com/docs/rest-api.html
  *
  */
