@@ -115,7 +115,7 @@ class Firebase implements FirebaseInterface
     /**
      * Writing multiple datas into multiple Firebase paths with a PUT request via socks
      * $paths[$key] must be pair to $datas[$key]
-     * !! SUPER FAST !! Do not use more than 1000 elements ( depends of elements size, it's not well tested )
+     * !! SUPER FAST !! Do not use more than 200 elements ( depends of elements size, it's not well tested )
      *
      * @param Array $paths List of Paths
      * @param Array $data  List of Values
