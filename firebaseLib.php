@@ -24,6 +24,7 @@ class Firebase implements FirebaseInterface
     private $_timeout;
     private $_token;
     private $_ch;
+    private $_fp;
 
     /**
      * Constructor
@@ -46,6 +47,7 @@ class Firebase implements FirebaseInterface
         $this->setTimeOut(10);
         $this->setToken($token);
     }
+
 
     /**
      * Sets Token
@@ -111,29 +113,14 @@ class Firebase implements FirebaseInterface
       return $this->_writeData($path, $data, 'PUT');
     }
     /**
-     * Creating multiple curl process with shell_exec, you'll need shell_exec and must run PHP on linux 
-     * 
-     *
-     * @param String $path Path
-     * @param Mixed  $data Data
-     *
-     * @return Nothing be careful
-     */
-    public function set_fast($path,$data)
-    {
-        if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
-            return $this->_writeData($path, $data, 'PUT');
-        }
-        $this->_execPut($path,$data);
-    }
-    /**
      * Writing multiple datas into multiple Firebase paths with a PUT request via socks
      * $paths[$key] must be pair to $datas[$key]
+     * !! SUPER FAST !! Do not use more than 1000 elements ( depends of elements size, it's not well tested )
      *
      * @param Array $paths List of Paths
      * @param Array $data  List of Values
      *
-     * @return Boolean
+     * @return Nothing, be careful
      */
     public function set_multi($paths,$datas)
     {
@@ -143,7 +130,7 @@ class Firebase implements FirebaseInterface
         foreach ($paths as $key => $path) {
             $this->_socksPut($path,$datas[$key]);
         }
-        return 1;
+        $this->_closeSocks();
     }
     /**
      * Pushing data into Firebase with a POST request
@@ -251,13 +238,6 @@ class Firebase implements FirebaseInterface
         }
         return $return;
     }
-    private function _execPut($path,$data)
-    {
-        $path = $this->_getJsonPath($path);
-
-        $formatted_data = addslashes(json_encode($data));
-        shell_exec("curl -X PUT -d $formatted_data  \"$path\" > /dev/null 2>/dev/null &");
-    }
     private function _socksPut($path,$data)
     {
         $jsonData = json_encode($data);
@@ -265,17 +245,27 @@ class Firebase implements FirebaseInterface
         $parts=parse_url($path);
 
         $sslUrl = "ssl://".$parts['host'];
-        $fp = fsockopen($sslUrl,443,$errNo, $errStr, 30);
+        if($this->_fp)
+            $fp = $this->_fp;
+        else{
+            $fp = fsockopen($sslUrl,443,$errNo, $errStr, 300);
+            $this->_fp = $fp;
+        }
 
         $out = "PUT ".$parts['path']."?auth=".$this->_token." HTTP/1.1\r\n";
         $out.= "Host: ".$parts['host']."\r\n";
+        $out.= "Keep-Alive: 300\r\n"; 
+        $out.= "Connection: keep-alive\r\n"; 
         $out.= "Content-Type: application/json\r\n";
         $out.= "Content-Length: ".strlen($jsonData)."\r\n";
         $out.= "Connection: Close\r\n\r\n";
         if (isset($jsonData)) $out.= $jsonData;
 
         fwrite($fp, $out);
-        fclose($fp);
     }
-
+    private function _closeSocks()
+    {
+        fclose($this->_fp);
+        $this->_fp=null;
+    }
 }
