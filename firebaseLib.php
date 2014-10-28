@@ -111,6 +111,22 @@ class Firebase implements FirebaseInterface
       return $this->_writeData($path, $data, 'PUT');
     }
     /**
+     * Creating multiple curl process with shell_exec, you'll need shell_exec and must run PHP on linux 
+     * 
+     *
+     * @param String $path Path
+     * @param Mixed  $data Data
+     *
+     * @return Nothing be careful
+     */
+    public function set_fast($path,$data)
+    {
+        if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+            return $this->_writeData($path, $data, 'PUT');
+        }
+        $this->_execPut($path,$data);
+    }
+    /**
      * Writing multiple datas into multiple Firebase paths with a PUT request via socks
      * $paths[$key] must be pair to $datas[$key]
      *
@@ -234,6 +250,13 @@ class Firebase implements FirebaseInterface
             $return = null;
         }
         return $return;
+    }
+    private function _execPut($path,$data)
+    {
+        $path = $this->_getJsonPath($path);
+
+        $formatted_data = addslashes(json_encode($data));
+        shell_exec("curl -X PUT -d $formatted_data  \"$path\" > /dev/null 2>/dev/null &");
     }
     private function _socksPut($path,$data)
     {
