@@ -267,7 +267,7 @@ class Firebase implements FirebaseInterface
         $sslUrl = "ssl://".$parts['host'];
         $fp = fsockopen($sslUrl,443,$errNo, $errStr, 30);
 
-        $out = "PUT ".$parts['path']." HTTP/1.1\r\n";
+        $out = "PUT ".$parts['path']."?auth=".$this->_token." HTTP/1.1\r\n";
         $out.= "Host: ".$parts['host']."\r\n";
         $out.= "Content-Type: application/json\r\n";
         $out.= "Content-Length: ".strlen($jsonData)."\r\n";
