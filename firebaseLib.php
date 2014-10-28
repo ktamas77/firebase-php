@@ -23,6 +23,7 @@ class Firebase implements FirebaseInterface
     private $_baseURI;
     private $_timeout;
     private $_token;
+    private $_ch;
 
     /**
      * Constructor
@@ -151,7 +152,6 @@ class Firebase implements FirebaseInterface
         try {
             $ch = $this->_getCurlHandler($path, 'GET');
             $return = curl_exec($ch);
-            curl_close($ch);
         } catch (Exception $e) {
             $return = null;
         }
@@ -171,7 +171,6 @@ class Firebase implements FirebaseInterface
         try {
             $ch = $this->_getCurlHandler($path, 'DELETE');
             $return = curl_exec($ch);
-            curl_close($ch);
         } catch (Exception $e) {
             $return = null;
         }
@@ -188,14 +187,16 @@ class Firebase implements FirebaseInterface
     private function _getCurlHandler($path, $mode)
     {
         $url = $this->_getJsonPath($path);
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_TIMEOUT, $this->_timeout);
-        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $this->_timeout);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $mode);
-        return $ch;
+        if (!$this->_ch) {
+            $this->_ch = curl_init();
+        }
+        curl_setopt($this->_ch, CURLOPT_URL, $url);
+        curl_setopt($this->_ch, CURLOPT_TIMEOUT, $this->_timeout);
+        curl_setopt($this->_ch, CURLOPT_CONNECTTIMEOUT, $this->_timeout);
+        curl_setopt($this->_ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($this->_ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($this->_ch, CURLOPT_CUSTOMREQUEST, $mode);
+        return $this->_ch;
     }
 
     private function _writeData($path, $data, $method = 'PUT')
@@ -210,7 +211,6 @@ class Firebase implements FirebaseInterface
             curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
             curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonData);
             $return = curl_exec($ch);
-            curl_close($ch);
         } catch (Exception $e) {
             $return = null;
         }
