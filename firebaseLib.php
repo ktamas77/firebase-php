@@ -248,7 +248,7 @@ class Firebase implements FirebaseInterface
         if($this->_fp)
             $fp = $this->_fp;
         else{
-            $fp = fsockopen($sslUrl,443,$errNo, $errStr, 300);
+            $fp = fsockopen($sslUrl,443,$errNo, $errStr, 30);
             $this->_fp = $fp;
         }
 
