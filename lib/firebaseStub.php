@@ -107,7 +107,7 @@ class FirebaseStub
     private function _getDeleteResponse() { return $this->_getGetResponse(); }
 }
 
-Class Error {
+class Error {
   function __construct($error, $message)
   {
     $this->error = $error;
