@@ -1,13 +1,34 @@
 <?php
-/**
- * Stubs the Firebase interface without issuing any cURL requests.
- **/
+namespace Firebase;
 
-class FirebaseStub
-    implements FirebaseInterface
+/**
+ * Class FirebaseStub
+ *
+ * Stubs the Firebase interface without issuing any cURL requests.
+ *
+ * @package Firebase
+ */
+class FirebaseStub implements FirebaseInterface
 {
+    /**
+     * @var null
+     */
     private $_response = null;
 
+    /**
+     * @var
+     */
+    public $_baseURI;
+
+    /**
+     * @var
+     */
+    public $_token;
+
+    /**
+     * @param string $baseURI
+     * @param string $token
+     */
     function __construct($baseURI = '', $token = '')
     {
         if (!extension_loaded('curl')) {
@@ -19,57 +40,103 @@ class FirebaseStub
         $this->setToken($token);
     }
 
+    /**
+     * @param $token
+     * @return null
+     */
     public function setToken($token)
     {
         $this->_token = $token;
     }
 
+    /**
+     * @param $baseURI
+     * @return null
+     */
     public function setBaseURI($baseURI)
     {
         $baseURI .= (substr($baseURI, -1) == '/' ? '' : '/');
         $this->_baseURI = $baseURI;
     }
 
+    /**
+     * @param $seconds
+     * @return null
+     */
     public function setTimeOut($seconds)
     {
         $this->_timeout = $seconds;
     }
 
+    /**
+     * @param $path
+     * @param $data
+     * @return null
+     */
     public function set($path, $data)
     {
       return $this->_getSetResponse($data);
     }
 
+    /**
+     * @param $path
+     * @param $data
+     * @return null
+     */
     public function push($path, $data)
     {
       return $this->set($path, $data);
     }
 
+    /**
+     * @param $path
+     * @param $data
+     * @return null
+     */
     public function update($path, $data)
     {
       return $this->set($path, $data);
     }
 
+    /**
+     * @param $path
+     * @return null
+     */
     public function get($path)
     {
       return $this->_getGetResponse();
     }
 
+    /**
+     * @param $path
+     * @return null
+     */
     public function delete($path)
     {
       return $this->_getDeleteResponse();
     }
 
+    /**
+     * @param $expectedResponse
+     */
     public function setResponse($expectedResponse)
     {
         $this->_response = $expectedResponse;
     }
 
+    /**
+     * @uses $this->_baseURI
+     * @return Error
+     */
     private function _isBaseURIValid() {
       $error = preg_match('/^https:\/\//', $this->_baseURI);
       return new Error(($error == 0 ? true : false), 'Firebase does not support non-ssl traffic. Please try your request again over https.');
     }
 
+    /**
+     * @param $data
+     * @return Error
+     */
     private function _isDataValid($data) {
 
       if ($data == "" || $data == null) {
@@ -80,6 +147,10 @@ class FirebaseStub
       return new Error(($error ? false : true), "Invalid data; couldn't parse JSON object, array, or value. Perhaps you're using invalid characters in your key names.");
     }
 
+    /**
+     * @param $data
+     * @return null
+     */
     private function _getSetResponse($data)
     {
       $validBaseUriObject = $this->_isBaseURIValid();
@@ -95,6 +166,9 @@ class FirebaseStub
       return $this->_response;
     }
 
+    /**
+     * @return null
+     */
     private function _getGetResponse()
     {
       $validBaseUriObject = $this->_isBaseURIValid();
@@ -104,11 +178,22 @@ class FirebaseStub
       return $this->_response;
     }
 
+    /**
+     * @return null
+     */
     private function _getDeleteResponse() { return $this->_getGetResponse(); }
 }
 
+/**
+ * Class Error
+ * @package Firebase
+ */
 Class Error {
-  function __construct($error, $message)
+    /**
+     * @param $error
+     * @param $message
+     */
+    function __construct($error, $message)
   {
     $this->error = $error;
     $this->message = $message;
