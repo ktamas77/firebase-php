@@ -1,6 +1,8 @@
 <?php
 
-require_once join('/', array(__DIR__, '..', 'firebaseLib.php'));
+require_once '../src/firebaseLib.php';
+
+use \Firebase\FirebaseLib;
 
 class FirebaseTest extends PHPUnit_Framework_TestCase
 {
@@ -33,14 +35,14 @@ class FirebaseTest extends PHPUnit_Framework_TestCase
 
   public function setUp()
   {
-    $this->_firebase = new Firebase(self::DEFAULT_URL, self::DEFAULT_TOKEN);
+    $this->_firebase = new FirebaseLib(self::DEFAULT_URL, self::DEFAULT_TOKEN);
   }
 
   public function testNoBaseURI()
   {
     $errorMessage = null;
     try {
-      new Firebase();
+      new FirebaseLib();
     } catch (Exception $e) {
       $errorMessage = $e->getMessage();
     }

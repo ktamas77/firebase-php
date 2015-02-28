@@ -1,7 +1,9 @@
 <?php
 
-require_once join('/', array(__DIR__, '..', 'lib', 'firebaseInterface.php'));
-require_once join('/', array(__DIR__, '..', 'lib', 'firebaseStub.php'));
+require_once ('../src/firebaseInterface.php');
+require_once ('../src/firebaseStub.php');
+
+use \Firebase\FirebaseStub;
 
 class FirebaseStubTest extends PHPUnit_Framework_TestCase
 {
