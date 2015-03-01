@@ -1,11 +1,7 @@
 <?php
+namespace Firebase;
 
-require_once ('../src/firebaseInterface.php');
-require_once ('../src/firebaseStub.php');
-
-use \Firebase\FirebaseStub;
-
-class FirebaseStubTest extends PHPUnit_Framework_TestCase
+class FirebaseStubTest extends \PHPUnit_Framework_TestCase
 {
   /**
    * @var FirebaseStub
