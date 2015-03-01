@@ -11,6 +11,31 @@ Based on Firebase REST API: https://www.firebase.com/docs/rest-api.html
 
 Available on Packagist: https://packagist.org/packages/ktamas77/firebase-php
 
+Example
+=================
+```
+<?php
+
+const DEFAULT_URL = 'https://kidsplace.firebaseio.com/';
+const DEFAULT_TOKEN = 'MqL0c8tKCtheLSYcygYNtGhU8Z2hULOFs9OKPdEp';
+const DEFAULT_PATH = '/firebase/example';
+
+$firebase = new Firebase(DEFAULT_URL, DEFAULT_TOKEN);
+
+$test = array(
+    "foo" => "bar",
+    "i_love" => "lamp",
+    "id" => 42
+);
+
+$dateTime = new DateTime();
+
+$firebase->set(DEFAULT_PATH . '/' . $dateTime->format('c'), $test);
+
+```
+
+
+
 Firebase PHP Stub
 =================
 A Firebase PHP Stub has been created to allow for integration with phpunit without actually interacting with FirebaseIO.

@@ -1,6 +1,8 @@
 <?php
+namespace Firebase;
 
-require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'lib'.DIRECTORY_SEPARATOR.'firebaseInterface.php';
+use \Exception;
+
 
 /**
  * Firebase PHP Client Library
@@ -18,7 +20,7 @@ require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'lib'.DIRECTORY_SEPARATOR.'fi
  * @link   https://www.firebase.com/docs/rest-api.html
  *
  */
-class Firebase implements FirebaseInterface
+class FirebaseLib implements FirebaseInterface
 {
     private $_baseURI;
     private $_timeout;
@@ -27,9 +29,8 @@ class Firebase implements FirebaseInterface
     /**
      * Constructor
      *
-     * @param String $baseURI Base URI
-     *
-     * @return void
+     * @param string $baseURI
+     * @param string $token
      */
     function __construct($baseURI = '', $token = '')
     {
@@ -75,6 +76,7 @@ class Firebase implements FirebaseInterface
      * Returns with the normalized JSON absolute path
      *
      * @param String $path to data
+     * @return string
      */
     private function _getJsonPath($path)
     {
