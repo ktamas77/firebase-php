@@ -188,7 +188,7 @@ class FirebaseStub implements FirebaseInterface
  * Class Error
  * @package Firebase
  */
-Class Error {
+class Error {
     /**
      * @param $error
      * @param $message
