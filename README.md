@@ -4,18 +4,18 @@
 
 [![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/ktamas77/firebase-php/badges/quality-score.png?s=239ffca76628b5a86540b9def187e2f8a199cb10)](https://scrutinizer-ci.com/g/ktamas77/firebase-php/)
 
-Based on Firebase REST API: https://www.firebase.com/docs/rest-api.html
+Based on the [Firebase REST API](https://www.firebase.com/docs/rest-api.html).
 
-Available on Packagist: https://packagist.org/packages/ktamas77/firebase-php
+Available on [Packagist](https://packagist.org/packages/ktamas77/firebase-php).
 
-### Adding Firebase-PHP to your project using Composer
+### Adding Firebase PHP to your project using Composer
 
 ```bash
 cd <your_project>
 composer require ktamas77/firebase-php dev-master
 ```
 
-More info about Composer at http://getcomposer.org
+More info about Composer at [getcomposer.org](http://getcomposer.org).
 
 ### Example
 ```php
@@ -58,7 +58,7 @@ $firebase->setBaseURI($uri);     // set up Firebase base URI (root node)
 $firebase->setTimeOut($seconds); // set up maximum timeout / request
 ```
 
-Please refer to the (https://www.firebase.com/docs/rest/api/)[Firebase REST API documentation] for further details.
+Please refer to the [Firebase REST API documentation](https://www.firebase.com/docs/rest/api/) for further details.
 
 ### Firebase PHP Stub
 A Firebase PHP Stub has been created to allow for integration with phpunit without actually interacting with FirebaseIO.
