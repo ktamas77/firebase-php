@@ -49,7 +49,7 @@ $firebase->set($path, $value);   // stores data in Firebase
 $value = $firebase->get($path);  // reads a value from Firebase
 $firebase->delete($path);        // deletes value from Firebase
 $firebase->update($path, $data); // updates data in Firebase
-$firebase->push($Path, $data);   // push data to Firebase
+$firebase->push($path, $data);   // push data to Firebase
 
 // -- Firebase PHP Library commands
 
