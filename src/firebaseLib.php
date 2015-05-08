@@ -50,7 +50,7 @@ class FirebaseLib implements FirebaseInterface
     /**
      * Sets Token
      *
-     * @param String $token Token
+     * @param string $token Token
      *
      * @return void
      */
@@ -62,7 +62,7 @@ class FirebaseLib implements FirebaseInterface
     /**
      * Sets Base URI, ex: http://yourcompany.firebase.com/youruser
      *
-     * @param String $baseURI Base URI
+     * @param string $baseURI Base URI
      *
      * @return void
      */
@@ -75,7 +75,7 @@ class FirebaseLib implements FirebaseInterface
     /**
      * Returns with the normalized JSON absolute path
      *
-     * @param String $path to data
+     * @param string $path to data
      * @return string
      */
     private function _getJsonPath($path)
@@ -89,7 +89,7 @@ class FirebaseLib implements FirebaseInterface
     /**
      * Sets REST call timeout in seconds
      *
-     * @param Integer $seconds Seconds to timeout
+     * @param integer $seconds Seconds to timeout
      *
      * @return void
      */
@@ -102,10 +102,10 @@ class FirebaseLib implements FirebaseInterface
      * Writing data into Firebase with a PUT request
      * HTTP 200: Ok
      *
-     * @param String $path Path
-     * @param Mixed  $data Data
+     * @param string $path Path
+     * @param mixed  $data Data
      *
-     * @return Array Response
+     * @return array Response
      */
     public function set($path, $data)
     {
@@ -116,10 +116,10 @@ class FirebaseLib implements FirebaseInterface
      * Pushing data into Firebase with a POST request
      * HTTP 200: Ok
      *
-     * @param String $path Path
-     * @param Mixed  $data Data
+     * @param string $path Path
+     * @param mixed  $data Data
      *
-     * @return Array Response
+     * @return array Response
      */
     public function push($path, $data)
     {
@@ -130,10 +130,10 @@ class FirebaseLib implements FirebaseInterface
      * Updating data into Firebase with a PATH request
      * HTTP 200: Ok
      *
-     * @param String $path Path
-     * @param Mixed  $data Data
+     * @param string $path Path
+     * @param mixed  $data Data
      *
-     * @return Array Response
+     * @return array Response
      */
     public function update($path, $data)
     {
@@ -144,9 +144,9 @@ class FirebaseLib implements FirebaseInterface
      * Reading data from Firebase
      * HTTP 200: Ok
      *
-     * @param String $path Path
+     * @param string $path Path
      *
-     * @return Array Response
+     * @return array Response
      */
     public function get($path)
     {
@@ -164,9 +164,9 @@ class FirebaseLib implements FirebaseInterface
      * Deletes data from Firebase
      * HTTP 204: Ok
      *
-     * @param type $path Path
+     * @param string $path Path
      *
-     * @return Array Response
+     * @return array Response
      */
     public function delete($path)
     {
@@ -183,9 +183,9 @@ class FirebaseLib implements FirebaseInterface
     /**
      * Returns with Initialized CURL Handler
      *
-     * @param String $mode Mode
+     * @param string $mode Mode
      *
-     * @return CURL Curl Handler
+     * @return resource Curl Handler
      */
     private function _getCurlHandler($path, $mode)
     {
