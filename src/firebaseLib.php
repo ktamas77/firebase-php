@@ -1,6 +1,8 @@
 <?php
+namespace Firebase;
 
-require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'lib'.DIRECTORY_SEPARATOR.'firebaseInterface.php';
+use \Exception;
+
 
 /**
  * Firebase PHP Client Library
@@ -18,7 +20,7 @@ require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'lib'.DIRECTORY_SEPARATOR.'fi
  * @link   https://www.firebase.com/docs/rest-api.html
  *
  */
-class Firebase implements FirebaseInterface
+class FirebaseLib implements FirebaseInterface
 {
     private $_baseURI;
     private $_timeout;
@@ -28,9 +30,8 @@ class Firebase implements FirebaseInterface
     /**
      * Constructor
      *
-     * @param String $baseURI Base URI
-     *
-     * @return void
+     * @param string $baseURI
+     * @param string $token
      */
     function __construct($baseURI = '', $token = '')
     {
@@ -50,7 +51,7 @@ class Firebase implements FirebaseInterface
     /**
      * Sets Token
      *
-     * @param String $token Token
+     * @param string $token Token
      *
      * @return void
      */
@@ -62,7 +63,7 @@ class Firebase implements FirebaseInterface
     /**
      * Sets Base URI, ex: http://yourcompany.firebase.com/youruser
      *
-     * @param String $baseURI Base URI
+     * @param string $baseURI Base URI
      *
      * @return void
      */
@@ -75,7 +76,8 @@ class Firebase implements FirebaseInterface
     /**
      * Returns with the normalized JSON absolute path
      *
-     * @param String $path to data
+     * @param string $path to data
+     * @return string
      */
     private function _getJsonPath($path)
     {
@@ -88,7 +90,7 @@ class Firebase implements FirebaseInterface
     /**
      * Sets REST call timeout in seconds
      *
-     * @param Integer $seconds Seconds to timeout
+     * @param integer $seconds Seconds to timeout
      *
      * @return void
      */
@@ -101,10 +103,10 @@ class Firebase implements FirebaseInterface
      * Writing data into Firebase with a PUT request
      * HTTP 200: Ok
      *
-     * @param String $path Path
-     * @param Mixed  $data Data
+     * @param string $path Path
+     * @param mixed  $data Data
      *
-     * @return Array Response
+     * @return array Response
      */
     public function set($path, $data)
     {
@@ -115,10 +117,10 @@ class Firebase implements FirebaseInterface
      * Pushing data into Firebase with a POST request
      * HTTP 200: Ok
      *
-     * @param String $path Path
-     * @param Mixed  $data Data
+     * @param string $path Path
+     * @param mixed  $data Data
      *
-     * @return Array Response
+     * @return array Response
      */
     public function push($path, $data)
     {
@@ -129,10 +131,10 @@ class Firebase implements FirebaseInterface
      * Updating data into Firebase with a PATH request
      * HTTP 200: Ok
      *
-     * @param String $path Path
-     * @param Mixed  $data Data
+     * @param string $path Path
+     * @param mixed  $data Data
      *
-     * @return Array Response
+     * @return array Response
      */
     public function update($path, $data)
     {
@@ -143,9 +145,9 @@ class Firebase implements FirebaseInterface
      * Reading data from Firebase
      * HTTP 200: Ok
      *
-     * @param String $path Path
+     * @param string $path Path
      *
-     * @return Array Response
+     * @return array Response
      */
     public function get($path)
     {
@@ -162,9 +164,9 @@ class Firebase implements FirebaseInterface
      * Deletes data from Firebase
      * HTTP 204: Ok
      *
-     * @param type $path Path
+     * @param string $path Path
      *
-     * @return Array Response
+     * @return array Response
      */
     public function delete($path)
     {
@@ -180,9 +182,9 @@ class Firebase implements FirebaseInterface
     /**
      * Returns with Initialized CURL Handler
      *
-     * @param String $mode Mode
+     * @param string $mode Mode
      *
-     * @return CURL Curl Handler
+     * @return resource Curl Handler
      */
     private function _getCurlHandler($path, $mode)
     {
