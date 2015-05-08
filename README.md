@@ -13,14 +13,14 @@ Available on Packagist: https://packagist.org/packages/ktamas77/firebase-php
 
 Example
 =================
-```
+```php
 <?php
 
 const DEFAULT_URL = 'https://kidsplace.firebaseio.com/';
 const DEFAULT_TOKEN = 'MqL0c8tKCtheLSYcygYNtGhU8Z2hULOFs9OKPdEp';
 const DEFAULT_PATH = '/firebase/example';
 
-$firebase = new Firebase(DEFAULT_URL, DEFAULT_TOKEN);
+$firebase = new \Firebase\FirebaseLib(DEFAULT_URL, DEFAULT_TOKEN);
 
 $test = array(
     "foo" => "bar",
@@ -44,7 +44,7 @@ To use the firebaseLib and firebaseStub in your application and testing, you mus
 
 For example, if your current code is:
 
-```
+```php
 public function setFirebaseValue($path, $value) {
   $firebase = new Firebase('https://radiant-fire-2427.firebaseio.com', 'czvEX8vMU8FZn4wYCvf466P3J6zH5ZlKQeuwxmEZ');
   $firebase->set($path, $value);
@@ -53,7 +53,7 @@ public function setFirebaseValue($path, $value) {
 
 You will change it to be:
 
-```
+```php
 public function setFirebaseValue($path, $value, $firebase) {
   $firebase->set($path, $value);
 }
@@ -61,7 +61,7 @@ public function setFirebaseValue($path, $value, $firebase) {
 
 Then your phpunit tests will look like:
 
-```
+```php
 <?php
   require_once '<path>/lib/firebaseInterface.php';
   require_once '<path>/lib/firebaseStub.php';
@@ -84,13 +84,13 @@ All the unit tests are found in the "/tests" directory. Due to the usage of an i
 
 The firebaseLib tests have inherent latency due to actual cURL calls to a live firebaseIO account. The firebaseLib tests can be executed by running the following command:
 
-```
+```bash
 $ phpunit tests/firebaseTest.php
 ```
 
 The FirebaseStub tests can be executed by running the following command:
 
-```
+```bash
 $ phpunit tests/firebaseStubTest.php
 ```
 
