@@ -1,43 +1,66 @@
-firebase-php
-============
+# Firebase PHP Client
 
 [![Build Status](https://drone.io/github.com/ktamas77/firebase-php/status.png)](https://drone.io/github.com/ktamas77/firebase-php/latest)
 
 [![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/ktamas77/firebase-php/badges/quality-score.png?s=239ffca76628b5a86540b9def187e2f8a199cb10)](https://scrutinizer-ci.com/g/ktamas77/firebase-php/)
 
-# Firebase PHP Client
-
 Based on Firebase REST API: https://www.firebase.com/docs/rest-api.html
 
 Available on Packagist: https://packagist.org/packages/ktamas77/firebase-php
 
-Example
-=================
-```php
-<?php
+### Adding Firebase-PHP to your project using Composer
 
+```bash
+cd <your_project>
+composer require ktamas77/firebase-php dev-master
+```
+
+More info about Composer at http://getcomposer.org
+
+### Example
+```php
 const DEFAULT_URL = 'https://kidsplace.firebaseio.com/';
 const DEFAULT_TOKEN = 'MqL0c8tKCtheLSYcygYNtGhU8Z2hULOFs9OKPdEp';
 const DEFAULT_PATH = '/firebase/example';
 
 $firebase = new \Firebase\FirebaseLib(DEFAULT_URL, DEFAULT_TOKEN);
 
+// --- storing an array ---
 $test = array(
     "foo" => "bar",
     "i_love" => "lamp",
     "id" => 42
 );
-
 $dateTime = new DateTime();
-
 $firebase->set(DEFAULT_PATH . '/' . $dateTime->format('c'), $test);
 
+// --- storing a string ---
+$firebase->set(DEFAULT_PATH . '/name/contact001', "John Doe");
+
+// --- reading the stored string ---
+$name = $firebase->get(DEFAULT_PATH . '/name/contact001');
 ```
 
+### Supported Commands
+```php
+// -- Firebase API commands
 
+$firebase->set($path, $value);   // stores data in Firebase
+$value = $firebase->get($path);  // reads a value from Firebase
+$firebase->delete($path);        // deletes value from Firebase
+$firebase->update($path, $data); // updates data in Firebase
+$firebase->push($Path, $data);   // push data to Firebase
 
-Firebase PHP Stub
-=================
+// -- Firebase PHP Library commands
+
+$firebase->setToken($token);     // set up Firebase token
+$firebase->setBaseURI($uri);     // set up Firebase base URI (root node)
+$firebase->setTimeOut($seconds); // set up maximum timeout / request
+```
+
+Please refer to the (https://www.firebase.com/docs/rest/api/)[Firebase REST API documentation] for further details.
+
+### Firebase PHP Stub
 A Firebase PHP Stub has been created to allow for integration with phpunit without actually interacting with FirebaseIO.
 
 To use the firebaseLib and firebaseStub in your application and testing, you must pass in a firebase object to your application.
@@ -77,9 +100,7 @@ Then your phpunit tests will look like:
 ?>
 ```
 
-Unit Tests
-==========
-
+### Unit Tests
 All the unit tests are found in the "/tests" directory. Due to the usage of an interface, the tests must run in isolation.
 
 The firebaseLib tests have inherent latency due to actual cURL calls to a live firebaseIO account. The firebaseLib tests can be executed by running the following command:
@@ -95,8 +116,8 @@ $ phpunit tests/firebaseStubTest.php
 ```
 
 
-# The MIT License (MIT)
-
+#### The MIT License (MIT)
+```
 Copyright (c) 2012-2015 Tamas Kalman
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -116,3 +137,4 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
+```
