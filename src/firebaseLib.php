@@ -80,10 +80,25 @@ class FirebaseLib implements FirebaseInterface
      */
     private function _getJsonPath($path)
     {
+        /*
         $url = $this->_baseURI;
         $path = ltrim($path, '/');
         $auth = ($this->_token == '') ? '' : '?auth=' . $this->_token;
         return $url . $path . '.json' . $auth;
+        */
+        // changed by Reed
+        // support query parameters
+        $baseUrl = $this->_baseURI;
+        $path = ltrim($path, '/');
+
+        if(strpos($path,'?')){
+          $auth = '&auth=' . $this->_token;
+          $url =  $baseUrl. $path . $auth;
+        }else{
+          $auth = '.json?auth=' . $this->_token;
+          $url =  $baseUrl. $path . $auth;
+        }        
+        return $url;        
     }
 
     /**
