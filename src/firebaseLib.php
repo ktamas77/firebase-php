@@ -25,6 +25,7 @@ class FirebaseLib implements FirebaseInterface
     private $_baseURI;
     private $_timeout;
     private $_token;
+    private $_verifyPeer;
 
     /**
      * Constructor
@@ -38,12 +39,9 @@ class FirebaseLib implements FirebaseInterface
             trigger_error('You must provide a baseURI variable.', E_USER_ERROR);
         }
 
-        if (!extension_loaded('curl')) {
-            trigger_error('Extension CURL is not loaded.', E_USER_ERROR);
-        }
-
         $this->setBaseURI($baseURI);
         $this->setTimeOut(10);
+        $this->setVerifyPeer(TRUE);
         $this->setToken($token);
     }
 
@@ -99,6 +97,18 @@ class FirebaseLib implements FirebaseInterface
     }
 
     /**
+     * Sets SSL Verify Peer flag
+     *
+     * @param boolean $verify True to verify peer
+     *
+     * @return void
+     */
+    public function setVerifyPeer($verify)
+    {
+        $this->_verifyPeer = $verify;
+    }
+
+    /**
      * Writing data into Firebase with a PUT request
      * HTTP 200: Ok
      *
@@ -109,7 +119,8 @@ class FirebaseLib implements FirebaseInterface
      */
     public function set($path, $data)
     {
-      return $this->_writeData($path, $data, 'PUT');
+      //return $this->_writeData($path, $data, 'PUT');
+      return $this->_webRequest($path, $data, 'PUT');
     }
 
     /**
@@ -123,7 +134,8 @@ class FirebaseLib implements FirebaseInterface
      */
     public function push($path, $data)
     {
-      return $this->_writeData($path, $data, 'POST');
+      //return $this->_writeData($path, $data, 'POST');
+      return $this->_webRequest($path, $data, 'POST');
     }
 
     /**
@@ -137,7 +149,8 @@ class FirebaseLib implements FirebaseInterface
      */
     public function update($path, $data)
     {
-      return $this->_writeData($path, $data, 'PATCH');
+      //return $this->_writeData($path, $data, 'PATCH');
+      return $this->_webRequest($path, $data, 'PATCH');
     }
 
     /**
@@ -150,6 +163,7 @@ class FirebaseLib implements FirebaseInterface
      */
     public function get($path)
     {
+      /*
         try {
             $ch = $this->_getCurlHandler($path, 'GET');
             $return = curl_exec($ch);
@@ -158,6 +172,8 @@ class FirebaseLib implements FirebaseInterface
             $return = null;
         }
         return $return;
+        */
+       return $this->_webRequest($path);
     }
 
     /**
@@ -170,6 +186,7 @@ class FirebaseLib implements FirebaseInterface
      */
     public function delete($path)
     {
+        /*
         try {
             $ch = $this->_getCurlHandler($path, 'DELETE');
             $return = curl_exec($ch);
@@ -178,6 +195,8 @@ class FirebaseLib implements FirebaseInterface
             $return = null;
         }
         return $return;
+        */
+       return $this->_webRequest($path, false, 'DELETE');
     }
 
     /**
@@ -194,11 +213,69 @@ class FirebaseLib implements FirebaseInterface
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_TIMEOUT, $this->_timeout);
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $this->_timeout);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, $this->_verifyPeer);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $mode);
         return $ch;
     }
+
+    /**
+     * Generates and executes a web request, with a preference
+     * for curl and falling back to file_get_contents when needed
+     *
+     * @param  string $path the target path
+     * @param  array $data any data to send JSON encoded
+     * @param  string $mode the request mode eg get, delete
+     * @return array       the request response
+     */
+     private function _webRequest( $path, $data = false, $mode = 'GET' )
+     {
+     	$url = $this->_getJsonPath( $path );
+     	if ( !extension_loaded( 'curl' ) ) {
+     		$header = array( );
+     		if ( $data && in_array( $mode, array(
+     			 'POST',
+     			'PUT', 'PATCH'
+     		) ) ) {
+     			$jsonData  = json_encode( $data );
+     			$header[ ] = 'Content-type: application/json';
+     			$header[ ] = 'Content-Length: ' . mb_strlen( $jsonData );
+     		} //$data && in_array( $mode, array( 'POST', 'PUT' ) )
+     		$header[ ]                  = 'Connection: close';
+     		$opts                       = array(
+     			 'http' => array(
+     				 'method' => $mode
+     			)
+     		);
+     		$opts[ 'http' ][ 'header' ] = implode( "\r\n", $header );
+     		if ( isset( $jsonData ) )
+     			$opts[ 'http' ][ 'content' ] = $jsonData;
+     		$opts[ 'http' ][ 'timeout' ] = $this->_timeout;
+     		$opts[ 'ssl' ]               = array(
+     			 'verify_peer' => $this->_verifyPeer
+     		);
+     		$context                     = stream_context_create( $opts );
+     		try {
+     			$return = file_get_contents( $url, false, $context );
+     		}
+     		catch ( Exception $e ) {
+     			$return = null;
+     		}
+     	}  else {
+        if($data) {
+          $return = $this->_writeData($path, $data, $mode);
+        } else {
+          try {
+              $ch = $this->_getCurlHandler($path, $mode);
+              $return = curl_exec($ch);
+              curl_close($ch);
+          } catch (Exception $e) {
+              $return = null;
+          }
+        }
+      }
+      return $return;
+     }
 
     private function _writeData($path, $data, $method = 'PUT')
     {

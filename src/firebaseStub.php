@@ -4,7 +4,7 @@ namespace Firebase;
 /**
  * Class FirebaseStub
  *
- * Stubs the Firebase interface without issuing any cURL requests.
+ * Stubs the Firebase interface without issuing any web requests.
  *
  * @package Firebase
  */
@@ -31,10 +31,6 @@ class FirebaseStub implements FirebaseInterface
      */
     function __construct($baseURI = '', $token = '')
     {
-        if (!extension_loaded('curl')) {
-            trigger_error('Extension CURL is not loaded.', E_USER_ERROR);
-        }
-
         $this->setBaseURI($baseURI);
         $this->setTimeOut(10);
         $this->setToken($token);
