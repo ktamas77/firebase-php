@@ -228,54 +228,70 @@ class FirebaseLib implements FirebaseInterface
      * @param  string $mode the request mode eg get, delete
      * @return array       the request response
      */
-     private function _webRequest( $path, $data = false, $mode = 'GET' )
+     private function _webRequest($path, $data = false, $mode = 'GET')
      {
-     	$url = $this->_getJsonPath( $path );
-     	if ( !extension_loaded( 'curl' ) ) {
-     		$header = array( );
-     		if ( $data && in_array( $mode, array(
-     			 'POST',
-     			'PUT', 'PATCH'
-     		) ) ) {
-     			$jsonData  = json_encode( $data );
-     			$header[ ] = 'Content-type: application/json';
-     			$header[ ] = 'Content-Length: ' . mb_strlen( $jsonData );
+     	$url = $this->_getJsonPath($path);
+     	if (!extension_loaded('curl'))
+     	{
+     		$header = array();
+     		if ($data && in_array($mode, array(
+     			'POST',
+     			'PUT',
+     			'PATCH'
+     		)))
+     		{
+     			$jsonData = json_encode($data);
+     			$header[] = 'Content-type: application/json';
+     			$header[] = 'Content-Length: ' . mb_strlen($jsonData);
+     			$header[] = 'Connection: close';
      		} //$data && in_array( $mode, array( 'POST', 'PUT' ) )
-     		$header[ ]                  = 'Connection: close';
-     		$opts                       = array(
-     			 'http' => array(
-     				 'method' => $mode
+     		$opts = array(
+     			'http' => array(
+     				'method' => $mode
      			)
      		);
-     		$opts[ 'http' ][ 'header' ] = implode( "\r\n", $header );
-     		if ( isset( $jsonData ) )
-     			$opts[ 'http' ][ 'content' ] = $jsonData;
-     		$opts[ 'http' ][ 'timeout' ] = $this->_timeout;
-     		$opts[ 'ssl' ]               = array(
-     			 'verify_peer' => $this->_verifyPeer
+     		if (count($header) > 0) $opts['http']['header'] = implode("\r\n", $header);
+     		if (isset($jsonData)) $opts['http']['content'] = $jsonData;
+     		$opts['http']['timeout'] = $this->_timeout;
+     		$opts['ssl'] = array(
+     			'verify_peer' => $this->_verifyPeer
      		);
-     		$context                     = stream_context_create( $opts );
-     		try {
-     			$return = file_get_contents( $url, false, $context );
+     		$context = stream_context_create($opts);
+     		try
+     		{
+          $return = file_get_contents($url, false, $context);
      		}
-     		catch ( Exception $e ) {
+
+     		catch(Exception $e)
+     		{
      			$return = null;
      		}
-     	}  else {
-        if($data) {
-          $return = $this->_writeData($path, $data, $mode);
-        } else {
-          try {
-              $ch = $this->_getCurlHandler($path, $mode);
-              $return = curl_exec($ch);
-              curl_close($ch);
-          } catch (Exception $e) {
-              $return = null;
-          }
-        }
-      }
-      return $return;
+     	}
+     	else
+     	{
+     		if ($data)
+     		{
+     			$return = $this->_writeData($path, $data, $mode);
+     		}
+     		else
+     		{
+     			try
+     			{
+     				$ch = $this->_getCurlHandler($path, $mode);
+     				$return = curl_exec($ch);
+     				curl_close($ch);
+     			}
+
+     			catch(Exception $e)
+     			{
+     				$return = null;
+     			}
+     		}
+     	}
+
+     	return $return;
      }
+
 
     private function _writeData($path, $data, $method = 'PUT')
     {
