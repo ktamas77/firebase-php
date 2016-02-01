@@ -119,6 +119,7 @@ class FirebaseLib implements FirebaseInterface
      */
     public function set($path, $data)
     {
+      //return $this->_writeData($path, $data, 'PUT');
       return $this->_webRequest($path, $data, 'PUT');
     }
 
@@ -133,6 +134,7 @@ class FirebaseLib implements FirebaseInterface
      */
     public function push($path, $data)
     {
+      //return $this->_writeData($path, $data, 'POST');
       return $this->_webRequest($path, $data, 'POST');
     }
 
@@ -147,6 +149,7 @@ class FirebaseLib implements FirebaseInterface
      */
     public function update($path, $data)
     {
+      //return $this->_writeData($path, $data, 'PATCH');
       return $this->_webRequest($path, $data, 'PATCH');
     }
 
@@ -160,6 +163,16 @@ class FirebaseLib implements FirebaseInterface
      */
     public function get($path)
     {
+      /*
+        try {
+            $ch = $this->_getCurlHandler($path, 'GET');
+            $return = curl_exec($ch);
+            curl_close($ch);
+        } catch (Exception $e) {
+            $return = null;
+        }
+        return $return;
+        */
        return $this->_webRequest($path);
     }
 
@@ -173,6 +186,16 @@ class FirebaseLib implements FirebaseInterface
      */
     public function delete($path)
     {
+        /*
+        try {
+            $ch = $this->_getCurlHandler($path, 'DELETE');
+            $return = curl_exec($ch);
+            curl_close($ch);
+        } catch (Exception $e) {
+            $return = null;
+        }
+        return $return;
+        */
        return $this->_webRequest($path, false, 'DELETE');
     }
 

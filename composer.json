@@ -1,17 +1,21 @@
 {
-  "name": "ktamas77/firebase-php",
+  "name": "aicial/firebase-php",
   "description": "Firebase PHP Client",
-  "homepage": "https://github.com/ktamas77/firebase-php",
+  "homepage": "https://github.com/aicial/firebase-php",
   "keywords": [
     "firebase",
     "REST",
     "wrapper"
   ],
-  "version": "2.0.0",
+  "version": "2.0.1",
   "authors": [
     {
       "name": "Tamas Kalman",
       "email": "ktamas77@gmail.com"
+    },
+    {
+      "name": "Troy Kelly",
+      "email": "t@aicial.com"
     }
   ],
   "license": "MIT",
