@@ -76,14 +76,17 @@ class FirebaseLib implements FirebaseInterface
      * Returns with the normalized JSON absolute path
      *
      * @param string $path to data
+     * @param array $options
      * @return string
      */
-    private function _getJsonPath($path)
+    private function _getJsonPath($path, $options)
     {
         $url = $this->_baseURI;
         $path = ltrim($path, '/');
-        $auth = ($this->_token == '') ? '' : '?auth=' . $this->_token;
-        return $url . $path . '.json' . $auth;
+        if (!empty($this->_token))
+            $options['auth'] = $this->_token;
+        $options = http_build_query($options);
+        return $url . $path . '.json' . (!empty($options) ? '?' . $options : '');
     }
 
     /**
@@ -148,10 +151,10 @@ class FirebaseLib implements FirebaseInterface
      *
      * @return array Response
      */
-    public function get($path)
+    public function get($path, $options = [])
     {
         try {
-            $ch = $this->_getCurlHandler($path, 'GET');
+            $ch = $this->_getCurlHandler($path, 'GET', $options);
             $return = curl_exec($ch);
             curl_close($ch);
         } catch (Exception $e) {
@@ -184,12 +187,13 @@ class FirebaseLib implements FirebaseInterface
      * Returns with Initialized CURL Handler
      *
      * @param string $mode Mode
+     * @param array $options
      *
      * @return resource Curl Handler
      */
-    private function _getCurlHandler($path, $mode)
+    private function _getCurlHandler($path, $mode, $options = [])
     {
-        $url = $this->_getJsonPath($path);
+        $url = $this->_getJsonPath($path, $options);
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_TIMEOUT, $this->_timeout);
