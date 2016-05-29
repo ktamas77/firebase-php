@@ -107,10 +107,7 @@ class FirebaseStubTest extends \PHPUnit_Framework_TestCase
   public function testInvalidData()
   {
     $response = $this->_firebaseStub->set(self::DEFAULT_PATH, self::INVALID_DATA);
-    $messageToMatch = $this->_getErrorMessages('INVALID_JSON');
-      var_dump($messageToMatch);
-      var_dump($response);
-    $this->assertEquals($messageToMatch, $response);
+    $this->assertEquals($this->_getErrorMessages('INVALID_JSON'), $response);
   }
 
   public function testMissingData()
