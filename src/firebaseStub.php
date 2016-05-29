@@ -146,7 +146,7 @@ class FirebaseStub implements FirebaseInterface
       }
 
       $error = json_decode($data);
-      return new Error(($error ? false : true), "Invalid data; couldn't parse JSON object, array, or value. Perhaps you're using invalid characters in your key names.");
+      return new Error(($error !== null ? false : true), "Invalid data; couldn't parse JSON object, array, or value. Perhaps you're using invalid characters in your key names.");
     }
 
     /**
