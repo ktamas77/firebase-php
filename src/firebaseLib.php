@@ -197,6 +197,7 @@ class FirebaseLib implements FirebaseInterface
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $mode);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
         return $ch;
     }
 
