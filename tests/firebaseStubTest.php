@@ -103,13 +103,7 @@ class FirebaseStubTest extends \PHPUnit_Framework_TestCase
     $response = $firebase->set(self::DEFAULT_PATH, self::DEFAULT_DATA);
     $this->assertEquals($this->_getErrorMessages('INSECURE_URL'), $response);
   }
-
-  public function testInvalidData()
-  {
-    $response = $this->_firebaseStub->set(self::DEFAULT_PATH, self::INVALID_DATA);
-    $this->assertEquals($this->_getErrorMessages('INVALID_JSON'), $response);
-  }
-
+    
   public function testMissingData()
   {
     $response = $this->_firebaseStub->set(self::DEFAULT_PATH, self::MISSING_DATA);

@@ -140,15 +140,10 @@ class FirebaseStub implements FirebaseInterface
      * @return Error
      */
     private function _isDataValid($data) {
-        var_dump($data);
       if ($data == "" || $data == null) {
-          echo "case1";
         return new Error(true, "Missing data; Perhaps you forgot to send the data.");
       }
-
       $error = json_decode($data);
-        echo "case2";
-        var_dump($error);
       return new Error(($error !== null ? false : true), "Invalid data; couldn't parse JSON object, array, or value. Perhaps you're using invalid characters in your key names.");
     }
 
