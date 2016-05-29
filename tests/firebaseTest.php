@@ -1,5 +1,8 @@
 <?php
+
 namespace Firebase;
+
+require_once __DIR__ . "/../src/firebaseLib.php";
 
 use Exception;
 

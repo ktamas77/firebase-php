@@ -1,6 +1,8 @@
 <?php
 namespace Firebase;
 
+require_once __DIR__ . '/../src/firebaseStub.php';
+
 class FirebaseStubTest extends \PHPUnit_Framework_TestCase
 {
   /**
