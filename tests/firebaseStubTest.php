@@ -93,7 +93,7 @@ class FirebaseStubTest extends \PHPUnit_Framework_TestCase
 
     public function testDelete()
     {
-        $actualResponse = $this->_firebaseStub->delete(self::DEFAULT_PATH, self::DEFAULT_DATA);
+        $actualResponse = $this->_firebaseStub->delete(self::DEFAULT_PATH);
         $this->assertEquals(null, $actualResponse);
     }
 
