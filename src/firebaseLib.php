@@ -12,7 +12,6 @@ use \Exception;
  * @author Tamas Kalman <ktamas77@gmail.com>
  * @url    https://github.com/ktamas77/firebase-php/
  * @link   https://www.firebase.com/docs/rest-api.html
- *
  */
 
 /**
@@ -20,7 +19,6 @@ use \Exception;
  *
  * @author Tamas Kalman <ktamas77@gmail.com>
  * @link   https://www.firebase.com/docs/rest-api.html
- *
  */
 class FirebaseLib implements FirebaseInterface
 {
@@ -77,8 +75,8 @@ class FirebaseLib implements FirebaseInterface
     /**
      * Returns with the normalized JSON absolute path
      *
-     * @param string $path    Path
-     * @param array  $options Options
+     * @param  string $path Path
+     * @param  array $options Options
      * @return string
      */
     private function _getJsonPath($path, $options = array())
@@ -107,53 +105,53 @@ class FirebaseLib implements FirebaseInterface
      * Writing data into Firebase with a PUT request
      * HTTP 200: Ok
      *
-     * @param string $path    Path
-     * @param mixed  $data    Data
-     * @param array  $options Options
+     * @param string $path Path
+     * @param mixed $data Data
+     * @param array $options Options
      *
      * @return array Response
      */
     public function set($path, $data, $options = array())
     {
-      return $this->_writeData($path, $data, 'PUT', $options);
+        return $this->_writeData($path, $data, 'PUT', $options);
     }
 
     /**
      * Pushing data into Firebase with a POST request
      * HTTP 200: Ok
      *
-     * @param string $path    Path
-     * @param mixed  $data    Data
-     * @param array  $options Options
+     * @param string $path Path
+     * @param mixed $data Data
+     * @param array $options Options
      *
      * @return array Response
      */
     public function push($path, $data, $options = array())
     {
-      return $this->_writeData($path, $data, 'POST', $options);
+        return $this->_writeData($path, $data, 'POST', $options);
     }
 
     /**
      * Updating data into Firebase with a PATH request
      * HTTP 200: Ok
      *
-     * @param string $path    Path
-     * @param mixed  $data    Data
-     * @param array  $options Options
+     * @param string $path Path
+     * @param mixed $data Data
+     * @param array $options Options
      *
      * @return array Response
      */
     public function update($path, $data, $options = array())
     {
-      return $this->_writeData($path, $data, 'PATCH', $options);
+        return $this->_writeData($path, $data, 'PATCH', $options);
     }
 
     /**
      * Reading data from Firebase
      * HTTP 200: Ok
      *
-     * @param string $path    Path
-     * @param array  $options Options
+     * @param string $path Path
+     * @param array $options Options
      *
      * @return array Response
      */
@@ -173,8 +171,8 @@ class FirebaseLib implements FirebaseInterface
      * Deletes data from Firebase
      * HTTP 204: Ok
      *
-     * @param string $path    Path
-     * @param array  $options Options
+     * @param string $path Path
+     * @param array $options Options
      *
      * @return array Response
      */
@@ -193,9 +191,9 @@ class FirebaseLib implements FirebaseInterface
     /**
      * Returns with Initialized CURL Handler
      *
-     * @param string $path    Path
-     * @param string $mode    Mode
-     * @param array  $options Options
+     * @param string $path Path
+     * @param string $mode Mode
+     * @param array $options Options
      *
      * @return resource Curl Handler
      */
