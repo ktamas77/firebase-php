@@ -25,6 +25,7 @@ class FirebaseLib implements FirebaseInterface
     private $_baseURI;
     private $_timeout;
     private $_token;
+    private $_curlHandler;
 
     /**
      * Constructor
@@ -45,6 +46,27 @@ class FirebaseLib implements FirebaseInterface
         $this->setBaseURI($baseURI);
         $this->setTimeOut(10);
         $this->setToken($token);
+        $this->initCurlHandler();
+    }
+
+    /**
+     * Initializing the CURL handler
+     *
+     * @return void
+     */
+    public function initCurlHandler()
+    {
+        $this->_curlHandler = curl_init();
+    }
+
+    /**
+     * Closing the CURL handler
+     *
+     * @return void
+     */
+    public function closeCurlHandler()
+    {
+        curl_close($this->_curlHandler);
     }
 
     /**
@@ -160,7 +182,6 @@ class FirebaseLib implements FirebaseInterface
         try {
             $ch = $this->_getCurlHandler($path, 'GET', $options);
             $return = curl_exec($ch);
-            curl_close($ch);
         } catch (Exception $e) {
             $return = null;
         }
@@ -181,7 +202,6 @@ class FirebaseLib implements FirebaseInterface
         try {
             $ch = $this->_getCurlHandler($path, 'DELETE', $options);
             $return = curl_exec($ch);
-            curl_close($ch);
         } catch (Exception $e) {
             $return = null;
         }
@@ -200,7 +220,7 @@ class FirebaseLib implements FirebaseInterface
     private function _getCurlHandler($path, $mode, $options = array())
     {
         $url = $this->_getJsonPath($path, $options);
-        $ch = curl_init();
+        $ch = $this->_curlHandler;
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_TIMEOUT, $this->_timeout);
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $this->_timeout);
@@ -223,7 +243,6 @@ class FirebaseLib implements FirebaseInterface
             curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
             curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonData);
             $return = curl_exec($ch);
-            curl_close($ch);
         } catch (Exception $e) {
             $return = null;
         }
