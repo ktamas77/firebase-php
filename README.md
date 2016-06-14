@@ -51,6 +51,10 @@ $firebase->delete($path);        // deletes value from Firebase
 $firebase->update($path, $data); // updates data in Firebase
 $firebase->push($path, $data);   // push data to Firebase
 
+// -- Query Parameters can be optionally used on all operations, example:
+
+$value = $firebase->get($path, array('shallow' => 'true'));
+
 // -- Firebase PHP Library commands
 
 $firebase->setToken($token);     // set up Firebase token
@@ -118,7 +122,7 @@ $ phpunit tests/firebaseStubTest.php
 
 #### The MIT License (MIT)
 ```
-Copyright (c) 2012-2015 Tamas Kalman
+Copyright (c) 2012-2016 Tamas Kalman
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
