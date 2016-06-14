@@ -77,15 +77,18 @@ class FirebaseLib implements FirebaseInterface
     /**
      * Returns with the normalized JSON absolute path
      *
-     * @param string $path to data
+     * @param string $path    Path
+     * @param array  $options Options
      * @return string
      */
-    private function _getJsonPath($path)
+    private function _getJsonPath($path, $options = array())
     {
         $url = $this->_baseURI;
+        if ($this->_token !== '') {
+            $options['auth'] = $this->_token;
+        }
         $path = ltrim($path, '/');
-        $auth = ($this->_token == '') ? '' : '?auth=' . $this->_token;
-        return $url . $path . '.json' . $auth;
+        return $url . $path . '.json?' . http_build_query($options);
     }
 
     /**
@@ -104,56 +107,60 @@ class FirebaseLib implements FirebaseInterface
      * Writing data into Firebase with a PUT request
      * HTTP 200: Ok
      *
-     * @param string $path Path
-     * @param mixed  $data Data
+     * @param string $path    Path
+     * @param mixed  $data    Data
+     * @param array  $options Options
      *
      * @return array Response
      */
-    public function set($path, $data)
+    public function set($path, $data, $options = array())
     {
-      return $this->_writeData($path, $data, 'PUT');
+      return $this->_writeData($path, $data, 'PUT', $options);
     }
 
     /**
      * Pushing data into Firebase with a POST request
      * HTTP 200: Ok
      *
-     * @param string $path Path
-     * @param mixed  $data Data
+     * @param string $path    Path
+     * @param mixed  $data    Data
+     * @param array  $options Options
      *
      * @return array Response
      */
-    public function push($path, $data)
+    public function push($path, $data, $options = array())
     {
-      return $this->_writeData($path, $data, 'POST');
+      return $this->_writeData($path, $data, 'POST', $options);
     }
 
     /**
      * Updating data into Firebase with a PATH request
      * HTTP 200: Ok
      *
-     * @param string $path Path
-     * @param mixed  $data Data
+     * @param string $path    Path
+     * @param mixed  $data    Data
+     * @param array  $options Options
      *
      * @return array Response
      */
-    public function update($path, $data)
+    public function update($path, $data, $options = array())
     {
-      return $this->_writeData($path, $data, 'PATCH');
+      return $this->_writeData($path, $data, 'PATCH', $options);
     }
 
     /**
      * Reading data from Firebase
      * HTTP 200: Ok
      *
-     * @param string $path Path
+     * @param string $path    Path
+     * @param array  $options Options
      *
      * @return array Response
      */
-    public function get($path)
+    public function get($path, $options = array())
     {
         try {
-            $ch = $this->_getCurlHandler($path, 'GET');
+            $ch = $this->_getCurlHandler($path, 'GET', $options);
             $return = curl_exec($ch);
             curl_close($ch);
         } catch (Exception $e) {
@@ -166,14 +173,15 @@ class FirebaseLib implements FirebaseInterface
      * Deletes data from Firebase
      * HTTP 204: Ok
      *
-     * @param string $path Path
+     * @param string $path    Path
+     * @param array  $options Options
      *
      * @return array Response
      */
-    public function delete($path)
+    public function delete($path, $options = array())
     {
         try {
-            $ch = $this->_getCurlHandler($path, 'DELETE');
+            $ch = $this->_getCurlHandler($path, 'DELETE', $options);
             $return = curl_exec($ch);
             curl_close($ch);
         } catch (Exception $e) {
@@ -185,13 +193,15 @@ class FirebaseLib implements FirebaseInterface
     /**
      * Returns with Initialized CURL Handler
      *
-     * @param string $mode Mode
+     * @param string $path    Path
+     * @param string $mode    Mode
+     * @param array  $options Options
      *
      * @return resource Curl Handler
      */
-    private function _getCurlHandler($path, $mode)
+    private function _getCurlHandler($path, $mode, $options = array())
     {
-        $url = $this->_getJsonPath($path);
+        $url = $this->_getJsonPath($path, $options);
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_TIMEOUT, $this->_timeout);
@@ -203,7 +213,7 @@ class FirebaseLib implements FirebaseInterface
         return $ch;
     }
 
-    private function _writeData($path, $data, $method = 'PUT')
+    private function _writeData($path, $data, $method = 'PUT', $options = array())
     {
         $jsonData = json_encode($data);
         $header = array(
@@ -211,7 +221,7 @@ class FirebaseLib implements FirebaseInterface
             'Content-Length: ' . strlen($jsonData)
         );
         try {
-            $ch = $this->_getCurlHandler($path, $method);
+            $ch = $this->_getCurlHandler($path, $method, $options);
             curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
             curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonData);
             $return = curl_exec($ch);
