@@ -57,6 +57,10 @@ $firebase->push($path, $data);   // push data to Firebase
 
 $value = $firebase->get($path, array('shallow' => 'true'));
 
+// -- Query Parameter values with quotes, example (https://firebase.google.com/docs/database/rest/retrieve-data#filtering-by-a-specified-child-key):
+
+$value = $firebase->get($path, array('orderBy' => '"height"'));
+
 // -- Firebase PHP Library commands
 
 $firebase->setToken($token);     // set up Firebase token
