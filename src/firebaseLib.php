@@ -233,7 +233,7 @@ class FirebaseLib implements FirebaseInterface
 
     private function _writeData($path, $data, $method = 'PUT', $options = array())
     {
-        $jsonData = json_encode($data);
+        $jsonData = json_encode($data, JSON_FORCE_OBJECT);
         $header = array(
             'Content-Type: application/json',
             'Content-Length: ' . strlen($jsonData)
