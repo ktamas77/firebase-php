@@ -154,7 +154,7 @@ class FirebaseLib implements FirebaseInterface
     }
 
     /**
-     * Updating data into Firebase with a PATH request
+     * Updating data into Firebase with a PATCH request
      * HTTP 200: Ok
      *
      * @param string $path Path
