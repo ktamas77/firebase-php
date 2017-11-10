@@ -243,8 +243,12 @@ class FirebaseLib implements FirebaseInterface
             curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
             curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonData);
             $return = curl_exec($ch);
+            $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+            if (!preg_match("#^2.*#", $httpcode)) {
+                throw new Exception(json_encode([$httpcode, $return]));
+            }
         } catch (Exception $e) {
-            $return = null;
+            throw $e;
         }
         return $return;
     }
