@@ -175,12 +175,15 @@ class FirebaseLib implements FirebaseInterface
      * @param string $path Path
      * @param array $options Options
      *
-     * @return array Response
+     * @return null|bool|string Response
      */
     public function get($path, $options = array())
     {
         try {
             $ch = $this->_getCurlHandler($path, 'GET', $options);
+            
+            // When CURLOPT_RETURNTRANSFER is set the result will be a string on
+            // success or false on failure.
             $return = curl_exec($ch);
         } catch (Exception $e) {
             $return = null;
@@ -195,12 +198,15 @@ class FirebaseLib implements FirebaseInterface
      * @param string $path Path
      * @param array $options Options
      *
-     * @return array Response
+     * @return null|bool|string Response
      */
     public function delete($path, $options = array())
     {
         try {
             $ch = $this->_getCurlHandler($path, 'DELETE', $options);
+            
+            // When CURLOPT_RETURNTRANSFER is set the result will be a string on
+            // success or false on failure.
             $return = curl_exec($ch);
         } catch (Exception $e) {
             $return = null;
