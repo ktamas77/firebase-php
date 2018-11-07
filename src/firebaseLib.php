@@ -233,6 +233,8 @@ class FirebaseLib implements FirebaseInterface
 
     private function _writeData($path, $data, $method = 'PUT', $options = array(), $contentHeader = array())
     {   
+        $jsonData = json_encode($data);
+        
         $header = array(
             'Content-Type: application/json',
             'Content-Length: ' . strlen($jsonData)
@@ -244,8 +246,6 @@ class FirebaseLib implements FirebaseInterface
                 $header[$key] = $item;
             }
         }
-
-        $jsonData = json_encode($data);
 
         try {
             $ch = $this->_getCurlHandler($path, $method, $options);
