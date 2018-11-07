@@ -234,17 +234,21 @@ class FirebaseLib implements FirebaseInterface
     private function _writeData($path, $data, $method = 'PUT', $options = array(), $contentHeader = array())
     {   
         $jsonData = json_encode($data);
-        
-        $header = array(
-            'Content-Type: application/json',
-            'Content-Length: ' . strlen($jsonData)
-        );
+
+        if(!is_array($contentHeader)) {
+            $contentHeader = array();
+        }
+
+        if(!isset($contentHeader['Content-Type'])) {
+            $contentHeader['Content-Type'] = 'application/json';
+        }
+        $contentHeader['Content-Length'] = strlen($jsonData);
+
+        $header = [];
 
         // Insert additional settings into the request header 
-        if(!empty($contentHeader)) {
-            foreach($contentHeader as $key => $item) {
-                $header[$key] = $item;
-            }
+        foreach($contentHeader as $key => $item) {
+            $header[] = "$key: $value";
         }
 
         try {
