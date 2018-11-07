@@ -133,9 +133,9 @@ class FirebaseLib implements FirebaseInterface
      *
      * @return array Response
      */
-    public function set($path, $data, $options = array())
+    public function set($path, $data, $options = array(),$contentHeader = array())
     {
-        return $this->_writeData($path, $data, 'PUT', $options);
+        return $this->_writeData($path, $data, 'PUT', $options, $contentHeader);
     }
 
     /**
@@ -231,13 +231,22 @@ class FirebaseLib implements FirebaseInterface
         return $ch;
     }
 
-    private function _writeData($path, $data, $method = 'PUT', $options = array())
-    {
-        $jsonData = json_encode($data);
+    private function _writeData($path, $data, $method = 'PUT', $options = array(), $contentHeader = array())
+    {   
         $header = array(
             'Content-Type: application/json',
             'Content-Length: ' . strlen($jsonData)
         );
+
+        // Insert additional settings into the request header 
+        if(!empty($contentHeader)) {
+            foreach($contentHeader as $key => $item) {
+                $header[$key] = $item;
+            }
+        }
+
+        $jsonData = json_encode($data);
+
         try {
             $ch = $this->_getCurlHandler($path, $method, $options);
             curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
