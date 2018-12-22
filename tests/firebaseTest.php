@@ -2,24 +2,24 @@
 
 namespace Firebase;
 
-require_once __DIR__ . "/../src/firebaseLib.php";
+require_once __DIR__ . '/../src/firebaseLib.php';
 
 use Exception;
 
 class FirebaseTest extends \PHPUnit_Framework_TestCase
 {
-    protected $_firebase;
-    protected $_todoMilk = array(
+    protected $firebase;
+    protected $todoMilk = array(
         'name' => 'Pick the milk',
         'priority' => 1
     );
 
-    protected $_todoBeer = array(
+    protected $todoBeer = array(
         'name' => 'Pick the beer',
         'priority' => 2
     );
 
-    protected $_todoLEGO = array(
+    protected $todoLEGO = array(
         'name' => 'Pick the LEGO',
         'priority' => 3
     );
@@ -37,7 +37,7 @@ class FirebaseTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->_firebase = new FirebaseLib(self::DEFAULT_URL, self::DEFAULT_TOKEN);
+        $this->firebase = new FirebaseLib(self::DEFAULT_URL, self::DEFAULT_TOKEN);
     }
 
     public function testNoBaseURI()
@@ -54,33 +54,33 @@ class FirebaseTest extends \PHPUnit_Framework_TestCase
 
     public function testSet()
     {
-        $response = $this->_firebase->set(self::DEFAULT_TODO_PATH, $this->_todoMilk);
+        $response = $this->firebase->set(self::DEFAULT_TODO_PATH, $this->todoMilk);
         $this->assertEquals(self::DEFAULT_SET_RESPONSE, $response);
     }
 
     public function testGetAfterSet()
     {
-        $response = $this->_firebase->get(self::DEFAULT_TODO_PATH);
+        $response = $this->firebase->get(self::DEFAULT_TODO_PATH);
         $this->assertEquals(self::DEFAULT_SET_RESPONSE, $response);
     }
 
     public function testUpdate()
     {
-        $response = $this->_firebase->update(self::DEFAULT_TODO_PATH, $this->_todoBeer);
+        $response = $this->firebase->update(self::DEFAULT_TODO_PATH, $this->todoBeer);
         $this->assertEquals(self::DEFAULT_UPDATE_RESPONSE, $response);
     }
 
     public function testGetAfterUpdate()
     {
-        $response = $this->_firebase->get(self::DEFAULT_TODO_PATH);
+        $response = $this->firebase->get(self::DEFAULT_TODO_PATH);
         $this->assertEquals(self::DEFAULT_UPDATE_RESPONSE, $response);
     }
 
     public function testPush()
     {
-        $response = $this->_firebase->push(self::DEFAULT_TODO_PATH, $this->_todoLEGO);
+        $response = $this->firebase->push(self::DEFAULT_TODO_PATH, $this->todoLEGO);
         $this->assertRegExp('/{"name"\s?:\s?".*?}/', $response);
-        return $this->_parsePushResponse($response);
+        return $this->parsePushResponse($response);
     }
 
     /**
@@ -88,19 +88,19 @@ class FirebaseTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetAfterPush($responseName)
     {
-        $response = $this->_firebase->get(self::DEFAULT_TODO_PATH . '/' . $responseName);
+        $response = $this->firebase->get(self::DEFAULT_TODO_PATH . '/' . $responseName);
         $this->assertEquals(self::DEFAULT_PUSH_RESPONSE, $response);
     }
 
     public function testDelete()
     {
-        $response = $this->_firebase->delete(self::DELETE_PATH);
+        $response = $this->firebase->delete(self::DELETE_PATH);
         $this->assertEquals(self::DEFAULT_DELETE_RESPONSE, $response);
     }
 
     public function testGetAfterDELETE()
     {
-        $response = $this->_firebase->get(self::DEFAULT_TODO_PATH);
+        $response = $this->firebase->get(self::DEFAULT_TODO_PATH);
         $this->assertEquals(self::DEFAULT_DELETE_RESPONSE, $response);
     }
 

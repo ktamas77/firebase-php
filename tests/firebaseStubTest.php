@@ -8,7 +8,7 @@ class FirebaseStubTest extends \PHPUnit_Framework_TestCase
     /**
      * @var FirebaseStub
      */
-    protected $_firebaseStub;
+    protected $firebaseStub;
 
     const DEFAULT_URL = 'https://firebaseStub.firebaseio.com/';
     const DEFAULT_TOKEN = 'MqL0c8tKCtheLSYcygBrIanhU8Z2hULOFs9OKPdEp';
@@ -28,72 +28,72 @@ class FirebaseStubTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->_firebaseStub = new FirebaseStub(self::DEFAULT_URL, self::DEFAULT_TOKEN);
+        $this->firebaseStub = new FirebaseStub(self::DEFAULT_URL, self::DEFAULT_TOKEN);
     }
 
     public function testBaseURIInitializationOnInstantiation()
     {
-        $this->assertEquals(self::DEFAULT_TOKEN, $this->_firebaseStub->_token);
+        $this->assertEquals(self::DEFAULT_TOKEN, $this->firebaseStub->token);
     }
 
     public function testSetBaseURI()
     {
-        $actualResponse = $this->_firebaseStub->setBaseURI(self::UPDATED_URI);
+        $actualResponse = $this->firebaseStub->setBaseURI(self::UPDATED_URI);
         $this->assertEquals(null, $actualResponse);
 
-        $this->assertEquals(self::UPDATED_URI, $this->_firebaseStub->_baseURI);
+        $this->assertEquals(self::UPDATED_URI, $this->firebaseStub->baseURI);
     }
 
     public function testTokenInitializationOnInstantiation()
     {
-        $this->assertEquals(self::DEFAULT_TOKEN, $this->_firebaseStub->_token);
+        $this->assertEquals(self::DEFAULT_TOKEN, $this->firebaseStub->token);
     }
 
     public function testSetToken()
     {
-        $actualResponse = $this->_firebaseStub->setToken(self::UPDATED_TOKEN);
+        $actualResponse = $this->firebaseStub->setToken(self::UPDATED_TOKEN);
         $this->assertEquals(null, $actualResponse);
 
-        $this->assertEquals(self::UPDATED_TOKEN, $this->_firebaseStub->_token);
+        $this->assertEquals(self::UPDATED_TOKEN, $this->firebaseStub->token);
     }
 
     public function testTimeoutInitializationOnInstantiation()
     {
-        $this->assertEquals(self::DEFAULT_TIMEOUT, $this->_firebaseStub->_timeout);
+        $this->assertEquals(self::DEFAULT_TIMEOUT, $this->firebaseStub->timeout);
     }
 
     public function testSetTimeout()
     {
-        $actualResponse = $this->_firebaseStub->setTimeout(self::UPDATED_TIMEOUT);
+        $actualResponse = $this->firebaseStub->setTimeout(self::UPDATED_TIMEOUT);
         $this->assertEquals(null, $actualResponse);
 
-        $this->assertEquals(self::UPDATED_TIMEOUT, $this->_firebaseStub->_timeout);
+        $this->assertEquals(self::UPDATED_TIMEOUT, $this->firebaseStub->timeout);
     }
 
     public function testSet()
     {
-        $this->_firebaseStub->setResponse(self::DEFAULT_DATA);
-        $actualResponse = $this->_firebaseStub->set(self::DEFAULT_PATH, self::DEFAULT_DATA);
+        $this->firebaseStub->setResponse(self::DEFAULT_DATA);
+        $actualResponse = $this->firebaseStub->set(self::DEFAULT_PATH, self::DEFAULT_DATA);
         $this->assertEquals(self::DEFAULT_DATA, $actualResponse);
     }
 
     public function testPush()
     {
-        $this->_firebaseStub->setResponse(self::DEFAULT_PUSH_DATA);
-        $actualResponse = $this->_firebaseStub->push(self::DEFAULT_PATH, self::DEFAULT_DATA);
+        $this->firebaseStub->setResponse(self::DEFAULT_PUSH_DATA);
+        $actualResponse = $this->firebaseStub->push(self::DEFAULT_PATH, self::DEFAULT_DATA);
         $this->assertEquals(self::DEFAULT_PUSH_DATA, $actualResponse);
     }
 
     public function testUpdate()
     {
-        $this->_firebaseStub->setResponse(self::DEFAULT_DATA);
-        $actualResponse = $this->_firebaseStub->update(self::DEFAULT_PATH, self::DEFAULT_DATA);
+        $this->firebaseStub->setResponse(self::DEFAULT_DATA);
+        $actualResponse = $this->firebaseStub->update(self::DEFAULT_PATH, self::DEFAULT_DATA);
         $this->assertEquals(self::DEFAULT_DATA, $actualResponse);
     }
 
     public function testDelete()
     {
-        $actualResponse = $this->_firebaseStub->delete(self::DEFAULT_PATH);
+        $actualResponse = $this->firebaseStub->delete(self::DEFAULT_PATH);
         $this->assertEquals(null, $actualResponse);
     }
 
@@ -101,24 +101,24 @@ class FirebaseStubTest extends \PHPUnit_Framework_TestCase
     {
         $firebase = new FirebaseStub(self::INSECURE_URL);
         $response = $firebase->set(self::DEFAULT_PATH, self::DEFAULT_DATA);
-        $this->assertEquals($this->_getErrorMessages('INSECURE_URL'), $response);
+        $this->assertEquals($this->getErrorMessages('INSECURE_URL'), $response);
     }
 
     public function testMissingData()
     {
-        $response = $this->_firebaseStub->set(self::DEFAULT_PATH, self::MISSING_DATA);
-        $this->assertEquals($this->_getErrorMessages('NO_DATA'), $response);
+        $response = $this->firebaseStub->set(self::DEFAULT_PATH, self::MISSING_DATA);
+        $this->assertEquals($this->getErrorMessages('NO_DATA'), $response);
     }
 
     public function testNullData()
     {
-        $response = $this->_firebaseStub->set(self::DEFAULT_PATH, self::NULL_DATA);
-        $this->assertEquals($this->_getErrorMessages('NO_DATA'), $response);
+        $response = $this->firebaseStub->set(self::DEFAULT_PATH, self::NULL_DATA);
+        $this->assertEquals($this->getErrorMessages('NO_DATA'), $response);
     }
 
-    private function _getErrorMessages($errorCode)
+    private function getErrorMessages($errorCode)
     {
-        $errorMessages = Array(
+        $errorMessages = array(
             'INSECURE_URL' => 'Firebase does not support non-ssl traffic. Please try your request again over https.',
             'INVALID_JSON' => 'Invalid data; couldn\'t parse JSON object, array, or value. Perhaps you\'re using invalid characters in your key names.',
             'NO_DATA' => 'Missing data; Perhaps you forgot to send the data.'

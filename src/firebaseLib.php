@@ -3,8 +3,7 @@ namespace Firebase;
 
 require_once __DIR__ . '/firebaseInterface.php';
 
-use \Exception;
-
+use Exception;
 
 /**
  * Firebase PHP Client Library
@@ -22,10 +21,11 @@ use \Exception;
  */
 class FirebaseLib implements FirebaseInterface
 {
-    private $_baseURI;
-    private $_timeout;
-    private $_token;
-    private $_curlHandler;
+    private $baseURI;
+    private $timeout;
+    private $token;
+    private $curlHandler;
+    private $sslConnection;
 
     /**
      * Constructor
@@ -35,7 +35,7 @@ class FirebaseLib implements FirebaseInterface
      */
     function __construct($baseURI = '', $token = '')
     {
-        if ($baseURI == '') {
+        if ($baseURI === '') {
             trigger_error('You must provide a baseURI variable.', E_USER_ERROR);
         }
 
@@ -47,6 +47,7 @@ class FirebaseLib implements FirebaseInterface
         $this->setTimeOut(10);
         $this->setToken($token);
         $this->initCurlHandler();
+        $this->setSSLConnection(true);
     }
 
     /**
@@ -56,7 +57,7 @@ class FirebaseLib implements FirebaseInterface
      */
     public function initCurlHandler()
     {
-        $this->_curlHandler = curl_init();
+        $this->curlHandler = curl_init();
     }
 
     /**
@@ -66,7 +67,26 @@ class FirebaseLib implements FirebaseInterface
      */
     public function closeCurlHandler()
     {
-        curl_close($this->_curlHandler);
+        curl_close($this->curlHandler);
+    }
+
+    /**
+     * Enabling/Disabling SSL Connection
+     *
+     * @param bool $enableSSLConnection
+     */
+    public function setSSLConnection($enableSSLConnection) {
+        $this->sslConnection = $enableSSLConnection;
+    }
+
+    /**
+     * Returns status of SSL Connection
+     *
+     * @return boolean
+     */
+    public function getSSLConnection()
+    {
+        return $this->sslConnection;
     }
 
     /**
@@ -78,7 +98,7 @@ class FirebaseLib implements FirebaseInterface
      */
     public function setToken($token)
     {
-        $this->_token = $token;
+        $this->token = $token;
     }
 
     /**
@@ -90,8 +110,8 @@ class FirebaseLib implements FirebaseInterface
      */
     public function setBaseURI($baseURI)
     {
-        $baseURI .= (substr($baseURI, -1) == '/' ? '' : '/');
-        $this->_baseURI = $baseURI;
+        $baseURI .= (substr($baseURI, -1) === '/' ? '' : '/');
+        $this->baseURI = $baseURI;
     }
 
     /**
@@ -101,14 +121,15 @@ class FirebaseLib implements FirebaseInterface
      * @param  array $options Options
      * @return string
      */
-    private function _getJsonPath($path, $options = array())
+    private function getJsonPath($path, $options = array())
     {
-        $url = $this->_baseURI;
-        if ($this->_token !== '') {
-            $options['auth'] = $this->_token;
+        $url = $this->baseURI;
+        if ($this->token !== '') {
+            $options['auth'] = $this->token;
         }
         $path = ltrim($path, '/');
-        return $url . $path . '.json?' . http_build_query($options);
+        $query = http_build_query($options);
+        return "$url$path.json?$query";
     }
 
     /**
@@ -120,7 +141,7 @@ class FirebaseLib implements FirebaseInterface
      */
     public function setTimeOut($seconds)
     {
-        $this->_timeout = $seconds;
+        $this->timeout = $seconds;
     }
 
     /**
@@ -133,9 +154,9 @@ class FirebaseLib implements FirebaseInterface
      *
      * @return array Response
      */
-    public function set($path, $data, $options = array())
+    public function set($path, $data, array $options = [])
     {
-        return $this->_writeData($path, $data, 'PUT', $options);
+        return $this->writeData($path, $data, 'PUT', $options);
     }
 
     /**
@@ -148,9 +169,9 @@ class FirebaseLib implements FirebaseInterface
      *
      * @return array Response
      */
-    public function push($path, $data, $options = array())
+    public function push($path, $data, array $options = [])
     {
-        return $this->_writeData($path, $data, 'POST', $options);
+        return $this->writeData($path, $data, 'POST', $options);
     }
 
     /**
@@ -163,9 +184,9 @@ class FirebaseLib implements FirebaseInterface
      *
      * @return array Response
      */
-    public function update($path, $data, $options = array())
+    public function update($path, $data, array $options = [])
     {
-        return $this->_writeData($path, $data, 'PATCH', $options);
+        return $this->writeData($path, $data, 'PATCH', $options);
     }
 
     /**
@@ -177,10 +198,10 @@ class FirebaseLib implements FirebaseInterface
      *
      * @return array Response
      */
-    public function get($path, $options = array())
+    public function get($path, array $options = [])
     {
         try {
-            $ch = $this->_getCurlHandler($path, 'GET', $options);
+            $ch = $this->getCurlHandler($path, 'GET', $options);
             $return = curl_exec($ch);
         } catch (Exception $e) {
             $return = null;
@@ -197,10 +218,10 @@ class FirebaseLib implements FirebaseInterface
      *
      * @return array Response
      */
-    public function delete($path, $options = array())
+    public function delete($path, array $options = [])
     {
         try {
-            $ch = $this->_getCurlHandler($path, 'DELETE', $options);
+            $ch = $this->getCurlHandler($path, 'DELETE', $options);
             $return = curl_exec($ch);
         } catch (Exception $e) {
             $return = null;
@@ -217,21 +238,21 @@ class FirebaseLib implements FirebaseInterface
      *
      * @return resource Curl Handler
      */
-    private function _getCurlHandler($path, $mode, $options = array())
+    private function getCurlHandler($path, $mode, $options = array())
     {
-        $url = $this->_getJsonPath($path, $options);
-        $ch = $this->_curlHandler;
+        $url = $this->getJsonPath($path, $options);
+        $ch = $this->curlHandler;
         curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_TIMEOUT, $this->_timeout);
-        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $this->_timeout);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_TIMEOUT, $this->timeout);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $this->timeout);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, $this->getSSLConnection());
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $mode);
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
         return $ch;
     }
 
-    private function _writeData($path, $data, $method = 'PUT', $options = array())
+    private function writeData($path, $data, $method = 'PUT', $options = array())
     {
         $jsonData = json_encode($data);
         $header = array(
@@ -239,7 +260,7 @@ class FirebaseLib implements FirebaseInterface
             'Content-Length: ' . strlen($jsonData)
         );
         try {
-            $ch = $this->_getCurlHandler($path, $method, $options);
+            $ch = $this->getCurlHandler($path, $method, $options);
             curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
             curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonData);
             $return = curl_exec($ch);
@@ -248,5 +269,4 @@ class FirebaseLib implements FirebaseInterface
         }
         return $return;
     }
-
 }

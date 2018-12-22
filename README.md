@@ -1,6 +1,6 @@
 # Firebase PHP Client
 
-[![Build Status](https://drone.io/github.com/ktamas77/firebase-php/status.png)](https://drone.io/github.com/ktamas77/firebase-php/latest)
+[![Build Status](https://cloud.drone.io/api/badges/ktamas77/firebase-php/status.svg)](https://cloud.drone.io/ktamas77/firebase-php)
 
 [![Build Status](https://semaphoreci.com/api/v1/ktamas77/firebase-php/branches/master/badge.svg)](https://semaphoreci.com/ktamas77/firebase-php)
 
@@ -28,16 +28,16 @@ const DEFAULT_PATH = '/firebase/example';
 $firebase = new \Firebase\FirebaseLib(DEFAULT_URL, DEFAULT_TOKEN);
 
 // --- storing an array ---
-$test = array(
-    "foo" => "bar",
-    "i_love" => "lamp",
-    "id" => 42
-);
+$test = [
+    'foo' => 'bar',
+    'i_love' => 'lamp',
+    'id' => 42
+];
 $dateTime = new DateTime();
 $firebase->set(DEFAULT_PATH . '/' . $dateTime->format('c'), $test);
 
 // --- storing a string ---
-$firebase->set(DEFAULT_PATH . '/name/contact001', "John Doe");
+$firebase->set(DEFAULT_PATH . '/name/contact001', 'John Doe');
 
 // --- reading the stored string ---
 $name = $firebase->get(DEFAULT_PATH . '/name/contact001');
@@ -110,25 +110,41 @@ Then your phpunit tests will look like:
 ?>
 ```
 
+### Composer upgrade
+
+Coding standards check / fixing & tests are integrated with composer.
+To start, upgrade the required packages:
+
+```bash
+$ composer update
+```
+
 ### Unit Tests
 All the unit tests are found in the "/tests" directory. Due to the usage of an interface, the tests must run in isolation.
 
 The firebaseLib tests have inherent latency due to actual cURL calls to a live firebaseIO account. The firebaseLib tests can be executed by running the following command:
 
 ```bash
-$ phpunit tests/firebaseTest.php
+$ composer test
 ```
 
-The FirebaseStub tests can be executed by running the following command:
+### Coding Standards Validation
+The codebase is in compliance with PSR-2.
 
+To test coding standards:
 ```bash
-$ phpunit tests/firebaseStubTest.php
+$ composer style
+```
+
+To automatically fix standards (whenever it's possible):
+```bash
+$ composer style-fix
 ```
 
 
 #### The MIT License (MIT)
 ```
-Copyright (c) 2012-2016 Tamas Kalman
+Copyright (c) 2012-2018 Tamas Kalman
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
