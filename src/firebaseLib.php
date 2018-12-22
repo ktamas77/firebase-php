@@ -111,15 +111,15 @@ class FirebaseLib implements FirebaseInterface
         return $url . $path . '.json?' . http_build_query($options);
     }
 
-	/**
-	 * Gets info for the last request made
+    /**
+	* Gets info for the last request made
 	 *
 	 * @return array details from curl_getinfo
 	 */
-	public function getResponseInfo()
-	{
-		return curl_getinfo($this->_curlHandler);
-	}
+    public function getResponseInfo()
+    {
+	    return curl_getinfo($this->_curlHandler);
+    }
 
     /**
      * Sets REST call timeout in seconds
