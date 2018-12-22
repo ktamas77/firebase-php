@@ -1,9 +1,11 @@
 # Firebase PHP Client
 
+[![Current version](https://img.shields.io/packagist/v/ktamas77/firebase-php.svg)](https://packagist.org/packages/ktamas77/firebase-php)
+[![Supported PHP version](https://img.shields.io/packagist/php-v/ktamas77/firebase-php.svg)]()
+[![Total Downloads](https://img.shields.io/packagist/dt/kreait/firebase-php.svg)](https://packagist.org/packages/ktamas77/firebase-php/stats)
+
 [![Build Status](https://cloud.drone.io/api/badges/ktamas77/firebase-php/status.svg)](https://cloud.drone.io/ktamas77/firebase-php)
-
 [![Build Status](https://semaphoreci.com/api/v1/ktamas77/firebase-php/branches/master/badge.svg)](https://semaphoreci.com/ktamas77/firebase-php)
-
 [![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/ktamas77/firebase-php/badges/quality-score.png?s=239ffca76628b5a86540b9def187e2f8a199cb10)](https://scrutinizer-ci.com/g/ktamas77/firebase-php/)
 
 Based on the [Firebase REST API](https://www.firebase.com/docs/rest-api.html).
@@ -14,7 +16,7 @@ Available on [Packagist](https://packagist.org/packages/ktamas77/firebase-php).
 
 ```bash
 cd <your_project>
-composer require ktamas77/firebase-php dev-master
+composer require ktamas77/firebase-php
 ```
 
 More info about Composer at [getcomposer.org](http://getcomposer.org).
@@ -78,8 +80,10 @@ To use the firebaseLib and firebaseStub in your application and testing, you mus
 For example, if your current code is:
 
 ```php
-public function setFirebaseValue($path, $value) {
-  $firebase = new Firebase('https://radiant-fire-2427.firebaseio.com', 'czvEX8vMU8FZn4wYCvf466P3J6zH5ZlKQeuwxmEZ');
+public function setFirebaseValue($path, $value) { 
+  $url = 'https://radiant-fire-2427.firebaseio.com';
+  $token = 'czvEX8vMU8FZn4wYCvf466P3J6zH5ZlKQeuwxmEZ';
+  $firebase = new Firebase($url, $token);
   $firebase->set($path, $value);
 }
 ```
