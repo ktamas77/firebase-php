@@ -120,10 +120,10 @@ class FirebaseStubTest extends \PHPUnit_Framework_TestCase
     {
         $errorMessages = array(
             'INSECURE_URL' => 'Firebase does not support non-ssl traffic. Please try your request again over https.',
-            'INVALID_JSON' => 'Invalid data; couldn\'t parse JSON object, array, or value. Perhaps you\'re using invalid characters in your key names.',
+            'INVALID_JSON' => "Invalid data; couldn't parse JSON object, array, or value. " .
+                "Perhaps you're using invalid characters in your key names.",
             'NO_DATA' => 'Missing data; Perhaps you forgot to send the data.'
         );
-
         return $errorMessages[$errorCode];
     }
 }

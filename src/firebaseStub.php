@@ -1,6 +1,8 @@
 <?php
+
 namespace Firebase;
 
+require_once __DIR__ . '/firebaseError.php';
 require_once __DIR__ . '/firebaseInterface.php';
 
 /**
@@ -59,7 +61,8 @@ class FirebaseStub implements FirebaseInterface
      *
      * @param bool $enableSSLConnection
      */
-    public function setSSLConnection($enableSSLConnection) {
+    public function setSSLConnection($enableSSLConnection)
+    {
         $this->sslConnection = $enableSSLConnection;
     }
 
@@ -150,7 +153,8 @@ class FirebaseStub implements FirebaseInterface
     private function isBaseURIValid()
     {
         $error = preg_match('/^https:\/\//', $this->baseURI);
-        return new Error($error === 0, 'Firebase does not support non-ssl traffic. Please try your request again over https.');
+        $message = 'Firebase does not support non-ssl traffic. Please try your request again over https.';
+        return new Error($error === 0, $message);
     }
 
     /**
@@ -163,7 +167,9 @@ class FirebaseStub implements FirebaseInterface
             return new Error(true, 'Missing data; Perhaps you forgot to send the data.');
         }
         $error = json_decode($data);
-        return new Error($error === null, "Invalid data; couldn't parse JSON object, array, or value. Perhaps you're using invalid characters in your key names.");
+        $message = "Invalid data; couldn't parse JSON object, array, or value. " .
+            "Perhaps you're using invalid characters in your key names.";
+        return new Error($error === null, $message);
     }
 
     /**
@@ -203,26 +209,5 @@ class FirebaseStub implements FirebaseInterface
     private function getDeleteResponse()
     {
         return $this->getGetResponse();
-    }
-}
-
-/**
- * Class Error
- *
- * @package Firebase
- */
-class Error
-{
-    public $error;
-    public $message;
-
-    /**
-     * @param $error
-     * @param $message
-     */
-    public function __construct($error, $message)
-    {
-        $this->error = $error;
-        $this->message = $message;
     }
 }

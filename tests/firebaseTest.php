@@ -104,11 +104,7 @@ class FirebaseTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(self::DEFAULT_DELETE_RESPONSE, $response);
     }
 
-    /**
-     * @param $response
-     * @return mixed
-     */
-    private function _parsePushResponse($response)
+    private function parsePushResponse($response)
     {
         $responseObj = json_decode($response);
         return $responseObj->name;

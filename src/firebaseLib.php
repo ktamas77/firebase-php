@@ -33,7 +33,7 @@ class FirebaseLib implements FirebaseInterface
      * @param string $baseURI
      * @param string $token
      */
-    function __construct($baseURI = '', $token = '')
+    public function __construct($baseURI = '', $token = '')
     {
         if ($baseURI === '') {
             trigger_error('You must provide a baseURI variable.', E_USER_ERROR);
@@ -75,7 +75,8 @@ class FirebaseLib implements FirebaseInterface
      *
      * @param bool $enableSSLConnection
      */
-    public function setSSLConnection($enableSSLConnection) {
+    public function setSSLConnection($enableSSLConnection)
+    {
         $this->sslConnection = $enableSSLConnection;
     }
 
