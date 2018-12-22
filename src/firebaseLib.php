@@ -112,13 +112,13 @@ class FirebaseLib implements FirebaseInterface
     }
 
     /**
-	* Gets info for the last request made
+	 * Gets info for the last request made
 	 *
 	 * @return array details from curl_getinfo
 	 */
     public function getResponseInfo()
     {
-	    return curl_getinfo($this->_curlHandler);
+        return curl_getinfo($this->_curlHandler);
     }
 
     /**
