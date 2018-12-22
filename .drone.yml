@@ -1,0 +1,18 @@
+kind: pipeline
+name: default
+
+platform:
+  os: linux
+  arch: amd64
+
+steps:
+- name: api
+  image: php
+  commands:
+  - apt-get update
+  - apt-get install -y git
+  - php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+  - php composer-setup.php
+  - ./composer.phar update
+  - ./composer.phar test
+
