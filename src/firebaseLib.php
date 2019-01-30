@@ -153,7 +153,7 @@ class FirebaseLib implements FirebaseInterface
      * @param mixed $data Data
      * @param array $options Options
      *
-     * @return array Response
+     * @return mixed Response
      */
     public function set($path, $data, array $options = [])
     {
@@ -168,7 +168,7 @@ class FirebaseLib implements FirebaseInterface
      * @param mixed $data Data
      * @param array $options Options
      *
-     * @return array Response
+     * @return mixed Response
      */
     public function push($path, $data, array $options = [])
     {
@@ -183,7 +183,7 @@ class FirebaseLib implements FirebaseInterface
      * @param mixed $data Data
      * @param array $options Options
      *
-     * @return array Response
+     * @return mixed Response
      */
     public function update($path, $data, array $options = [])
     {
