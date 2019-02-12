@@ -24,7 +24,7 @@ More info about Composer at [getcomposer.org](http://getcomposer.org).
 ### Example
 ```php
 const DEFAULT_URL = 'https://kidsplace.firebaseio.com/';
-const DEFAULT_TOKEN = 'MqL0c8tKCtheLSYcygYNtGhU8Z2hULOFs9OKPdEp';
+const DEFAULT_TOKEN = 'MqL0c8tKCtheLSYcygYNtGhU8Z2hULOFs9OKPdEp'; // You will find this in the firebase console. Settings -> Project Settings -> Service accounts -> Database secrets
 const DEFAULT_PATH = '/firebase/example';
 
 $firebase = new \Firebase\FirebaseLib(DEFAULT_URL, DEFAULT_TOKEN);
