@@ -202,9 +202,8 @@ class FirebaseLib implements FirebaseInterface
     public function get($path, array $options = [])
     {
         $ch = $this->getCurlHandler($path, 'GET', $options);
-        $return = curl_exec($ch);
 
-        return $return;
+        return curl_exec($ch);;
     }
 
     /**
