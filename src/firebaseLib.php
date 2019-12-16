@@ -201,9 +201,29 @@ class FirebaseLib implements FirebaseInterface
      */
     public function get($path, array $options = [])
     {
+        try {
+            $ch = $this->getCurlHandler($path, 'GET', $options);
+            $return = curl_exec($ch);
+        } catch (Exception $e) {
+            $return = null;
+        }
+        return $return;
+    }
+
+    /**
+     * Reading data from Firebase
+     * HTTP 200: Ok
+     *
+     * @param string $path Path
+     * @param array $options Options
+     *
+     * @return array Response
+     */
+    public function getWithException($path, array $options = [])
+    {
         $ch = $this->getCurlHandler($path, 'GET', $options);
 
-        return curl_exec($ch);;
+        return curl_exec($ch);
     }
 
     /**
