@@ -174,10 +174,15 @@ class FirebaseLib implements FirebaseInterface
      * @param array $options Options
      *
      * @return array Response
+     * @throws Exception
      */
     public function push($path, $data, array $options = [])
     {
-        return $this->writeData($path, $data, 'POST', $options);
+        try {
+            return $this->writeData($path, $data, 'POST', $options);
+        } catch (Exception $e) {
+            throw new Exception($e);
+        }
     }
 
     /**
@@ -189,10 +194,15 @@ class FirebaseLib implements FirebaseInterface
      * @param array $options Options
      *
      * @return array Response
+     * @throws Exception
      */
     public function update($path, $data, array $options = [])
     {
-        return $this->writeData($path, $data, 'PATCH', $options);
+        try {
+            return $this->writeData($path, $data, 'PATCH', $options);
+        } catch (Exception $e) {
+            throw new Exception($e);
+        }
     }
 
     /**
@@ -203,14 +213,17 @@ class FirebaseLib implements FirebaseInterface
      * @param array $options Options
      *
      * @return array Response
+     * @throws Exception
      */
     public function get($path, array $options = [])
     {
+        $return = null;
         try {
             $ch = $this->getCurlHandler($path, 'GET', $options);
             $return = curl_exec($ch);
         } catch (Exception $e) {
-            $return = null;
+            //Return null consult-api in case exception arises
+            throw new Exception($e);
         }
         return $return;
     }
@@ -239,14 +252,17 @@ class FirebaseLib implements FirebaseInterface
      * @param array $options Options
      *
      * @return array Response
+     * @throws Exception
      */
     public function delete($path, array $options = [])
     {
+        $return = null;
         try {
             $ch = $this->getCurlHandler($path, 'DELETE', $options);
             $return = curl_exec($ch);
         } catch (Exception $e) {
-            $return = null;
+            //Return null consult-api in case exception arises
+            throw new Exception($e);
         }
         return $return;
     }
