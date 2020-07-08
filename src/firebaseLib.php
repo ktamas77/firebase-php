@@ -154,10 +154,15 @@ class FirebaseLib implements FirebaseInterface
      * @param array $options Options
      *
      * @return array Response
+     * @throws Exception
      */
     public function set($path, $data, array $options = [])
     {
-        return $this->writeData($path, $data, 'PUT', $options);
+        try {
+            return $this->writeData($path, $data, 'PUT', $options);
+        } catch (Exception $e) {
+            throw new Exception($e);
+        }
     }
 
     /**
