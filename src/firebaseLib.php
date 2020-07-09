@@ -201,13 +201,9 @@ class FirebaseLib implements FirebaseInterface
      */
     public function get($path, array $options = [])
     {
-        try {
-            $ch = $this->getCurlHandler($path, 'GET', $options);
-            $return = curl_exec($ch);
-        } catch (Exception $e) {
-            $return = null;
-        }
-        return $return;
+        $ch = $this->getCurlHandler($path, 'GET', $options);
+
+        return curl_exec($ch);
     }
 
     /**
@@ -237,13 +233,9 @@ class FirebaseLib implements FirebaseInterface
      */
     public function delete($path, array $options = [])
     {
-        try {
-            $ch = $this->getCurlHandler($path, 'DELETE', $options);
-            $return = curl_exec($ch);
-        } catch (Exception $e) {
-            $return = null;
-        }
-        return $return;
+        $ch = $this->getCurlHandler($path, 'DELETE', $options);
+
+        return curl_exec($ch);
     }
 
     /**
