@@ -201,13 +201,9 @@ class FirebaseLib implements FirebaseInterface
      */
     public function get($path, array $options = [])
     {
-        try {
-            $ch = $this->getCurlHandler($path, 'GET', $options);
-            $return = curl_exec($ch);
-        } catch (Exception $e) {
-            $return = null;
-        }
-        return $return;
+        $ch = $this->getCurlHandler($path, 'GET', $options);
+
+        return curl_exec($ch);
     }
 
     /**
@@ -237,13 +233,9 @@ class FirebaseLib implements FirebaseInterface
      */
     public function delete($path, array $options = [])
     {
-        try {
-            $ch = $this->getCurlHandler($path, 'DELETE', $options);
-            $return = curl_exec($ch);
-        } catch (Exception $e) {
-            $return = null;
-        }
-        return $return;
+        $ch = $this->getCurlHandler($path, 'DELETE', $options);
+
+        return curl_exec($ch);
     }
 
     /**
@@ -276,14 +268,11 @@ class FirebaseLib implements FirebaseInterface
             'Content-Type: application/json',
             'Content-Length: ' . strlen($jsonData)
         );
-        try {
-            $ch = $this->getCurlHandler($path, $method, $options);
-            curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonData);
-            $return = curl_exec($ch);
-        } catch (Exception $e) {
-            $return = null;
-        }
-        return $return;
+
+        $ch = $this->getCurlHandler($path, $method, $options);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonData);
+
+        return curl_exec($ch);
     }
 }
