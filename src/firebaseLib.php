@@ -202,24 +202,13 @@ class FirebaseLib implements FirebaseInterface
     public function get($path, array $options = [])
     {
         $ch = $this->getCurlHandler($path, 'GET', $options);
+        $result = curl_exec($ch);
 
-        return curl_exec($ch);
-    }
+        if(curl_errno($ch)) {
+            throw new Exception("Firebase GET CURL: ".curl_error($ch).": ".curl_errno($ch));
+        }
 
-    /**
-     * Reading data from Firebase
-     * HTTP 200: Ok
-     *
-     * @param string $path Path
-     * @param array $options Options
-     *
-     * @return array Response
-     */
-    public function getWithException($path, array $options = [])
-    {
-        $ch = $this->getCurlHandler($path, 'GET', $options);
-
-        return curl_exec($ch);
+        return $result;
     }
 
     /**
@@ -234,8 +223,13 @@ class FirebaseLib implements FirebaseInterface
     public function delete($path, array $options = [])
     {
         $ch = $this->getCurlHandler($path, 'DELETE', $options);
+        $result = curl_exec($ch);
 
-        return curl_exec($ch);
+        if(curl_errno($ch)) {
+            throw new Exception("Firebase DELETE CURL: ".curl_error($ch).": ".curl_errno($ch));
+        }
+
+        return $result;
     }
 
     /**
@@ -258,6 +252,7 @@ class FirebaseLib implements FirebaseInterface
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $mode);
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+
         return $ch;
     }
 
@@ -272,7 +267,12 @@ class FirebaseLib implements FirebaseInterface
         $ch = $this->getCurlHandler($path, $method, $options);
         curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonData);
+        $result = curl_exec($ch);
 
-        return curl_exec($ch);
+        if(curl_errno($ch)) {
+            throw new Exception("Firebase $method CURL: ".curl_error($ch).": ".curl_errno($ch));
+        }
+
+        return $result;
     }
 }
