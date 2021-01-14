@@ -18,42 +18,53 @@ Available on [Packagist](https://packagist.org/packages/ktamas77/firebase-php).
 
 ### Adding Firebase PHP to your project using Composer
 
+#### For PHP 7 or later
+
 ```bash
-cd <your_project>
 composer require ktamas77/firebase-php
+```
+
+#### For PHP 5 use v2.2.4
+
+```bash
+composer require ktamas77/firebase-php:2.2.4
 ```
 
 More info about Composer at [getcomposer.org](http://getcomposer.org).
 
 ### Example
 ```php
-const DEFAULT_URL = 'https://kidsplace.firebaseio.com/';
-const DEFAULT_TOKEN = 'MqL0c8tKCtheLSYcygYNtGhU8Z2hULOFs9OKPdEp';
-const DEFAULT_PATH = '/firebase/example';
+
+// Firebase Token can be found in the Firebase Console:
+// Settings -> Project Settings -> Service accounts -> Database secrets
+
+const URL = 'https://kidsplace.firebaseio.com/';
+const TOKEN = 'MqL0c8tKCtheLSYcygYNtGhU8Z2hULOFs9OKPdEp';
+const PATH = '/firebase/example';
 
 use Firebase\FirebaseLib;
 
-$firebase = new FirebaseLib(DEFAULT_URL, DEFAULT_TOKEN);
+$firebase = new FirebaseLib(URL, TOKEN);
 
-// --- storing an array ---
+// Storing an array
 $test = [
     'foo' => 'bar',
     'i_love' => 'lamp',
     'id' => 42
 ];
 $dateTime = new DateTime();
-$firebase->set(DEFAULT_PATH . '/' . $dateTime->format('c'), $test);
+$firebase->set(PATH . '/' . $dateTime->format('c'), $test);
 
-// --- storing a string ---
-$firebase->set(DEFAULT_PATH . '/name/contact001', 'John Doe');
+// Storing a string
+$firebase->set(PATH . '/name/contact001', 'John Doe');
 
-// --- reading the stored string ---
-$name = $firebase->get(DEFAULT_PATH . '/name/contact001');
+// Reading the stored string
+$name = $firebase->get(PATH . '/name/contact001');
 ```
 
 ### Supported Commands
 ```php
-// -- Firebase API commands
+// Firebase API commands
 
 $firebase->set($path, $value);   // stores data in Firebase
 $value = $firebase->get($path);  // reads a value from Firebase
@@ -61,15 +72,16 @@ $firebase->delete($path);        // deletes value from Firebase
 $firebase->update($path, $data); // updates data in Firebase
 $firebase->push($path, $data);   // push data to Firebase
 
-// -- Query Parameters can be optionally used on all operations, example:
+// Query Parameters can be optionally used on all operations, example:
 
-$value = $firebase->get($path, array('shallow' => 'true'));
+$value = $firebase->get($path, ['shallow' => 'true']);
 
-// -- Query Parameter values with quotes, example (https://firebase.google.com/docs/database/rest/retrieve-data#filtering-by-a-specified-child-key):
+// Query Parameter values with quotes example
+// Documentation: https://firebase.google.com/docs/database/rest/retrieve-data#filtering-by-a-specified-child-key
 
-$value = $firebase->get($path, array('orderBy' => '"height"'));
+$value = $firebase->get($path, ['orderBy' => '"height"']);
 
-// -- Firebase PHP Library commands
+// Firebase PHP Library commands
 
 $firebase->setToken($token);     // set up Firebase token
 $firebase->setBaseURI($uri);     // set up Firebase base URI (root node)
@@ -77,48 +89,6 @@ $firebase->setTimeOut($seconds); // set up maximum timeout / request
 ```
 
 Please refer to the [Firebase REST API documentation](https://www.firebase.com/docs/rest/api/) for further details.
-
-### Firebase PHP Stub
-A Firebase PHP Stub has been created to allow for integration with phpunit without actually interacting with FirebaseIO.
-
-To use the firebaseLib and firebaseStub in your application and testing, you must pass in a firebase object to your application.
-
-For example, if your current code is:
-
-```php
-public function setFirebaseValue($path, $value) { 
-  $url = 'https://radiant-fire-2427.firebaseio.com';
-  $token = 'czvEX8vMU8FZn4wYCvf466P3J6zH5ZlKQeuwxmEZ';
-  $firebase = new Firebase($url, $token);
-  $firebase->set($path, $value);
-}
-```
-
-You will change it to be:
-
-```php
-public function setFirebaseValue($path, $value, $firebase) {
-  $firebase->set($path, $value);
-}
-```
-
-Then your phpunit tests will look like:
-
-```php
-<?php
-  require_once '<path>/lib/firebaseInterface.php';
-  require_once '<path>/lib/firebaseStub.php';
-
-  class MyClass extends PHPUnit_Framework_TestCase
-  {
-    public function testSetFirebaseValue() {
-      $myClass = new MyClass();
-      $firebaseStub = new FirebaseStub($uri, $token);
-      $myClass->setFirebaseValue($path, $value, $firebaseStub);
-    }
-  }
-?>
-```
 
 ### Composer upgrade
 
@@ -151,10 +121,9 @@ To automatically fix standards (whenever it's possible):
 $ composer style-fix
 ```
 
-
 #### The MIT License (MIT)
 ```
-Copyright (c) 2012-2018 Tamas Kalman
+Copyright (c) 2012-2021 Tamas Kalman
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

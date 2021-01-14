@@ -1,4 +1,5 @@
-.idea
-/nbproject/private/
-vendor
+nbproject/private/
 composer.lock
+.idea
+.phpunit.result.cache
+vendor
