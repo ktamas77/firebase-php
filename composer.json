@@ -7,7 +7,7 @@
     "REST",
     "wrapper"
   ],
-  "version": "2.2.4",
+  "version": "3.0.0",
   "authors": [
     {
       "name": "Tamas Kalman",
@@ -17,11 +17,13 @@
   "scripts": {
     "style": "vendor/squizlabs/php_codesniffer/bin/phpcs -p --encoding=utf-8 --standard=ruleset.xml --colors .",
     "style-fix": "vendor/squizlabs/php_codesniffer/bin/phpcbf -p --encoding=utf-8 --standard=ruleset.xml --colors .",
-    "test": "vendor/phpunit/phpunit/phpunit tests/firebaseStubTest.php"
+    "test": "vendor/phpunit/phpunit/phpunit"
   },
   "license": "MIT",
   "require": {
-    "php": ">=5.4.0"
+    "php": ">=7.2",
+    "ext-json": "*",
+    "ext-curl": "*"
   },
   "autoload": {
     "classmap": [
@@ -29,7 +31,7 @@
     ]
   },
   "require-dev": {
-    "phpunit/phpunit": "^5",
-    "squizlabs/php_codesniffer": "^3.4"
+    "phpunit/phpunit": "^8.5",
+    "squizlabs/php_codesniffer": "^3.5"
   }
 }

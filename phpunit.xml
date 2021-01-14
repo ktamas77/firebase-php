@@ -1,7 +1,7 @@
 <phpunit>
     <testsuites>
-        <testsuite>
-            <directory>tests/</directory>
+        <testsuite name="Firebase PHP Client Test Suite">
+            <directory>tests/Firebase</directory>
         </testsuite>
     </testsuites>
 </phpunit>

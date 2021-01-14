@@ -2,8 +2,6 @@
 <ruleset name="Firebase-PHP">
     <description>PHP Coding Standards for Firebase PHP Client</description>
     <ini name="memory_limit" value="2048M"/>
-    <rule ref="PSR2">
-        <exclude name="PSR1.Files.SideEffects.FoundWithSymbols"/>
-    </rule>
+    <rule ref="PSR2"/>
     <exclude-pattern>vendor/</exclude-pattern>
 </ruleset>

@@ -10,58 +10,58 @@ namespace Firebase;
 interface FirebaseInterface
 {
     /**
-     * @param $token
+     * @param string $token Token
      * @return mixed
      */
-    public function setToken($token);
+    public function setToken(string $token): void;
 
     /**
-     * @param $baseURI
+     * @param string $baseURI Base URI
      * @return mixed
      */
-    public function setBaseURI($baseURI);
+    public function setBaseURI(string $baseURI): void;
 
     /**
-     * @param $seconds
+     * @param int $seconds Seconds
      * @return mixed
      */
-    public function setTimeOut($seconds);
+    public function setTimeOut(int $seconds): void;
 
     /**
-     * @param $path
-     * @param $data
-     * @param $options
+     * @param string $path
+     * @param mixed $data
+     * @param array $options
      * @return mixed
      */
-    public function set($path, $data, array $options = []);
+    public function set(string $path, array $data, array $options = []);
 
     /**
-     * @param $path
-     * @param $data
-     * @param $options
+     * @param string $path
+     * @param mixed $data
+     * @param array $options
      * @return mixed
      */
-    public function push($path, $data, array $options = []);
+    public function push(string $path, $data, array $options = []);
 
     /**
-     * @param $path
-     * @param $data
-     * @param $options
+     * @param string $path
+     * @param mixed $data
+     * @param array $options
      * @return mixed
      */
-    public function update($path, $data, array $options = []);
+    public function update(string $path, $data, array $options = []);
 
     /**
-     * @param $path
-     * @param $options
+     * @param string $path
+     * @param array $options
      * @return mixed
      */
-    public function get($path, array $options = []);
+    public function delete(string $path, array $options = []);
 
     /**
-     * @param $path
-     * @param $options
+     * @param string $path
+     * @param array $options
      * @return mixed
      */
-    public function delete($path, array $options = []);
+    public function get(string $path, array $options = []);
 }
