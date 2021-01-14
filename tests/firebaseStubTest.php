@@ -1,9 +1,10 @@
 <?php
+
 namespace Firebase;
 
-require_once __DIR__ . '/../src/firebaseStub.php';
+use PHPUnit_Framework_TestCase;
 
-class FirebaseStubTest extends \PHPUnit_Framework_TestCase
+class FirebaseStubTest extends PHPUnit_Framework_TestCase
 {
     /**
      * @var FirebaseStub

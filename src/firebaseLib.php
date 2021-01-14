@@ -1,7 +1,6 @@
 <?php
-namespace Firebase;
 
-require_once __DIR__ . '/firebaseInterface.php';
+namespace Firebase;
 
 use Exception;
 

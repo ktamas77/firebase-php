@@ -2,9 +2,6 @@
 
 namespace Firebase;
 
-require_once __DIR__ . '/firebaseError.php';
-require_once __DIR__ . '/firebaseInterface.php';
-
 /**
  * Class FirebaseStub
  *

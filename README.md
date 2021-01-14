@@ -10,6 +10,8 @@
 
 [![Visual Source](https://img.shields.io/badge/visual-source-orange)](http://www.visualsource.net/repo/github.com/ktamas77/firebase-php)
 
+[:heart: Sponsor](https://github.com/sponsors/ktamas77)
+
 Based on the [Firebase REST API](https://www.firebase.com/docs/rest-api.html).
 
 Available on [Packagist](https://packagist.org/packages/ktamas77/firebase-php).
@@ -29,7 +31,9 @@ const DEFAULT_URL = 'https://kidsplace.firebaseio.com/';
 const DEFAULT_TOKEN = 'MqL0c8tKCtheLSYcygYNtGhU8Z2hULOFs9OKPdEp';
 const DEFAULT_PATH = '/firebase/example';
 
-$firebase = new \Firebase\FirebaseLib(DEFAULT_URL, DEFAULT_TOKEN);
+use Firebase\FirebaseLib;
+
+$firebase = new FirebaseLib(DEFAULT_URL, DEFAULT_TOKEN);
 
 // --- storing an array ---
 $test = [
