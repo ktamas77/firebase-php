@@ -2,11 +2,10 @@
 
 namespace Firebase;
 
-require_once __DIR__ . '/../src/firebaseLib.php';
-
 use Exception;
+use PHPUnit_Framework_TestCase;
 
-class FirebaseTest extends \PHPUnit_Framework_TestCase
+class FirebaseTest extends PHPUnit_Framework_TestCase
 {
     protected $firebase;
     protected $todoMilk = array(
